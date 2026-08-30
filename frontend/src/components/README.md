@@ -4,7 +4,8 @@ Reusable UI pieces used by more than one page, or used several times on one page
 
 Right now:
 
-- `EventCard.tsx` — one event on the homepage (and later on the event feed)
+- `EventCard.tsx` — one event (used later on the events screen)
+- `AuthForm.tsx` — shared Log in / Sign up panel on the welcome screen
 
 Likely later:
 
