@@ -1,0 +1,14 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Secrets and local env
+.env
+.env.local
+
+# OS
+.DS_Store
