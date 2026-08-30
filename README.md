@@ -1,22 +1,33 @@
 # CampusCircle
 
-CampusCircle is a full-stack campus event platform designed to help students discover events, RSVP, and see who else is interested or going.
+CampusCircle helps students find campus events and see who else is going, so showing up feels less awkward.
 
-The idea came from noticing that many campus events exist, but students often do not attend because events are scattered, under-advertised, or feel awkward to attend alone.
+Campus events already exist, but they are often only posted on university social accounts. Rooms look empty, and a lot of people — especially students without a car, or who are not into nightlife — do not want to be the first to walk in. CampusCircle puts those events in one place. You can mark **Going** or **Looking for someone** so others can reach out and go together.
 
-## Planned Features
-- User sign up and login
-- Simple student profiles with name and picture
-- Admin-created event posts
-- Event title, time, location, description, and image
-- RSVP buttons: Going, Looking for someone to go with
-- Public counts and lists of who is going or interested
+This is a first-version, resume-ready project. The current site is a **static frontend preview** with fake events. Login, RSVP logic, a real API, and a database come after the mock screens are in place.
 
-## Tech Stack
-- React
-- TypeScript
-- FastAPI
-- PostgreSQL
+## V1 (simple on purpose)
+
+- Browse campus events (title, time, location)
+- RSVP: Going, or Looking for someone
+- Public counts of who is going or looking
+- Sign up / login and a simple profile (name + picture)
+
+Not in v1: clubs, chat, maps, recommendations, or admin dashboards.
+
+## Tech stack
+
+- React + TypeScript (frontend)
+- FastAPI (backend, not started yet)
+- PostgreSQL (later)
+
+## Status
+
+| Area | Status |
+| --- | --- |
+| Homepage mock | In progress |
+| Event feed, login, profile screens | Next |
+| FastAPI + database + real RSVP | After the fake frontend |
 
 ## Repository layout
 
@@ -24,11 +35,12 @@ This repo is a **monorepo**: the React app and the FastAPI app live side by side
 
 ```
 campus-circle/
-├── frontend/                 # React + TypeScript (Vite) — in progress
+├── frontend/                 # React + TypeScript (Vite)
 │   └── src/
-│       ├── api/              # calls to the FastAPI backend
-│       ├── components/       # reusable UI (navbar, event card, …)
-│       ├── pages/            # one file per screen
+│       ├── api/              # backend calls (later)
+│       ├── components/       # reusable UI — EventCard lives here
+│       ├── data/             # hardcoded fake events for the mock
+│       ├── pages/            # one file per screen (later)
 │       └── types/            # TypeScript shapes (Event, User, RSVP)
 └── backend/                  # FastAPI — folders only for now
     └── app/
@@ -37,4 +49,4 @@ campus-circle/
         └── schemas/          # JSON in/out of the API
 ```
 
-Read [STRUCTURE.md](STRUCTURE.md) for why each folder exists. Folders are empty on purpose in this step; there is no backend code yet.
+Read [STRUCTURE.md](STRUCTURE.md) for why each folder exists. There is no backend code yet.
