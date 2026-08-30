@@ -31,6 +31,8 @@ Not in v1: clubs, chat, maps, recommendations, or admin dashboards.
 
 ## Repository layout
 
+This repo is a **monorepo**: the React app and the FastAPI app live side by side.
+
 ```
 campus-circle/
 ├── frontend/                 # React + TypeScript (Vite)
@@ -41,6 +43,10 @@ campus-circle/
 │       ├── pages/            # one file per screen (later)
 │       └── types/            # TypeScript shapes (Event, User, RSVP)
 └── backend/                  # FastAPI — folders only for now
+    └── app/
+        ├── routers/          # HTTP URLs
+        ├── models/           # PostgreSQL tables
+        └── schemas/          # JSON in/out of the API
 ```
 
-Read [STRUCTURE.md](STRUCTURE.md) for why these folders exist.
+Read [STRUCTURE.md](STRUCTURE.md) for why each folder exists. There is no backend code yet.
