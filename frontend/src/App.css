@@ -52,18 +52,24 @@ body {
   align-items: center;
   justify-content: center;
   padding: 56px 8%;
+}
+
+.cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 0;
+  width: min(1100px, 100%);
   transition: gap var(--motion);
 }
 
-.stage.is-auth {
-  justify-content: center;
-  gap: 56px;
+.stage.is-auth .cluster {
+  gap: 40px;
 }
 
 .brand {
   max-width: 560px;
-  flex: 0 1 560px;
+  flex: 1 1 auto;
 }
 
 .wordmark {
@@ -160,7 +166,9 @@ h1 span {
 }
 
 .stage.is-auth .auth-slot {
-  width: min(420px, 100%);
+  width: 420px;
+  max-width: 100%;
+  flex: 0 0 auto;
   opacity: 1;
   overflow: visible;
   pointer-events: auto;
@@ -258,10 +266,14 @@ h1 span {
 @media (max-width: 800px) {
   .stage,
   .stage.is-auth {
-    flex-direction: column;
-    justify-content: flex-start;
     align-items: stretch;
     padding: 40px 24px 48px;
+  }
+
+  .cluster,
+  .stage.is-auth .cluster {
+    flex-direction: column;
+    align-items: stretch;
     gap: 28px;
   }
 
