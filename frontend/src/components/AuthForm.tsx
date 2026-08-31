@@ -4,9 +4,15 @@ type AuthFormProps = {
   mode: "login" | "signup";
   onSwitchMode: () => void;
   onBack: () => void;
+  onSuccess: () => void;
 };
 
-export function AuthForm({ mode, onSwitchMode, onBack }: AuthFormProps) {
+export function AuthForm({
+  mode,
+  onSwitchMode,
+  onBack,
+  onSuccess,
+}: AuthFormProps) {
   const isSignup = mode === "signup";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,6 +23,7 @@ export function AuthForm({ mode, onSwitchMode, onBack }: AuthFormProps) {
       className="auth-form"
       onSubmit={(event) => {
         event.preventDefault();
+        onSuccess();
       }}
     >
       <p className="eyebrow">{isSignup ? "NEW HERE" : "WELCOME BACK"}</p>

@@ -1,8 +1,5 @@
 import type { CampusEvent } from "../types/event";
 
-// Hardcoded events for the static homepage.
-// Later, an api/ function will fetch this list from FastAPI.
-
 export const FAKE_EVENTS: CampusEvent[] = [
   {
     id: "welcome-back",
@@ -11,8 +8,10 @@ export const FAKE_EVENTS: CampusEvent[] = [
     month: "SEP",
     time: "6:00 PM",
     location: "Student Center",
-    goingCount: 14,
-    lookingCount: 5,
+    description:
+      "Low-key hang in the student center. Come meet people before the semester gets loud.",
+    goingPeople: ["Amina K.", "Luis R.", "Priya S.", "Jordan M."],
+    lookingPeople: ["Noah T.", "Hana L."],
   },
   {
     id: "international-potluck",
@@ -21,8 +20,10 @@ export const FAKE_EVENTS: CampusEvent[] = [
     month: "SEP",
     time: "5:30 PM",
     location: "Campus Commons",
-    goingCount: 9,
-    lookingCount: 6,
+    description:
+      "Bring a dish from home — or just bring yourself. Good food, no car required.",
+    goingPeople: ["Mei W.", "Omar A.", "Sofia G."],
+    lookingPeople: ["Chris P.", "Leila N.", "Theo B."],
   },
   {
     id: "game-night",
@@ -31,7 +32,23 @@ export const FAKE_EVENTS: CampusEvent[] = [
     month: "SEP",
     time: "7:30 PM",
     location: "Student Lounge",
-    goingCount: 11,
-    lookingCount: 4,
+    description:
+      "Casual games, extra chairs, and no pressure to already have a group.",
+    goingPeople: ["Riley C.", "Sam D.", "Ivy Q.", "Kenji O."],
+    lookingPeople: ["Maya F."],
   },
 ];
+
+const COVERS: [string, string][] = [
+  ["#f0a8e8", "#6c4cff"],
+  ["#ff9ec8", "#7c6bff"],
+  ["#c084fc", "#4f46e5"],
+];
+
+export function coverForEvent(id: string): [string, string] {
+  let n = 0;
+  for (const char of id) {
+    n += char.charCodeAt(0);
+  }
+  return COVERS[n % COVERS.length];
+}
