@@ -5,6 +5,7 @@ export type CampusEvent = {
   month: string;
   time: string;
   location: string;
-  goingCount: number;
-  lookingCount: number;
+  description: string;
+  goingPeople: string[];
+  lookingPeople: string[];
 };

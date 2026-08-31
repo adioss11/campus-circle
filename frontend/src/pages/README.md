@@ -1,13 +1,10 @@
 # pages
 
-One file per screen.
+A **page** is a whole screen with its own URL.
 
-Likely CampusCircle screens later:
+Right now:
 
-- Home (your current landing content)
-- Events list
-- Event details (counts and lists of who is going / interested)
-- Login / sign up
-- Profile
+- `HomePage.tsx` — `/` welcome, login, and signup
+- `EventsPage.tsx` — `/events` fake feed after login
 
-A page can use many components. It should not be a tiny reusable widget — those go in `components/`.
+Later: profile, maybe one event’s details.
