@@ -58,15 +58,13 @@ function App() {
           </section>
 
           <section className="auth-slot" aria-hidden={!isAuth}>
-            {isAuth ? (
-              <AuthForm
-                mode={screen === "signup" ? "signup" : "login"}
-                onSwitchMode={() =>
-                  setScreen(screen === "login" ? "signup" : "login")
-                }
-                onBack={() => setScreen("home")}
-              />
-            ) : null}
+            <AuthForm
+              mode={screen === "signup" ? "signup" : "login"}
+              onSwitchMode={() =>
+                setScreen(screen === "login" ? "signup" : "login")
+              }
+              onBack={() => setScreen("home")}
+            />
           </section>
         </div>
       </main>

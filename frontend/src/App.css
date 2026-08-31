@@ -1,12 +1,12 @@
 :root {
-  --bg: #9b7fe0;
-  --surface: #d5c4f2;
-  --input: #e4d7f8;
-  --border: #a78bdb;
-  --text: #17142b;
-  --muted: #3f3558;
-  --accent: #5b35ef;
-  --accent-deep: #4724d4;
+  --bg: #c9a0ea;
+  --surface: #efe4fb;
+  --input: #f6effe;
+  --border: #c4a8e4;
+  --text: #120c1c;
+  --muted: #2a2238;
+  --accent: #4e2ae0;
+  --accent-deep: #3b1cc0;
   --motion: 0.9s ease-in-out;
 }
 
@@ -17,11 +17,10 @@ body {
   color: var(--text);
   background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 90% 70% at 50% 42%, #a56ad8 0%, transparent 62%),
-    radial-gradient(ellipse 70% 55% at 8% 12%, #d46ad4 0%, transparent 58%),
-    radial-gradient(ellipse 65% 50% at 96% 88%, #4f3dff 0%, transparent 52%),
-    radial-gradient(ellipse 45% 40% at 80% 8%, #e06aa8 0%, transparent 55%),
-    linear-gradient(165deg, #b07ad4 0%, #8a62d0 48%, #5a48c4 100%);
+    radial-gradient(ellipse 70% 55% at 8% 12%, #f0a8e8 0%, transparent 58%),
+    radial-gradient(ellipse 65% 50% at 96% 88%, #8b7cff 0%, transparent 52%),
+    radial-gradient(ellipse 45% 40% at 80% 8%, #ff9ec8 0%, transparent 55%),
+    linear-gradient(165deg, #e4b4f0 0%, #c9a0ea 42%, #9b7fe0 100%);
   background-attachment: fixed;
 }
 
@@ -55,6 +54,7 @@ body {
 }
 
 .cluster {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,29 +153,30 @@ h1 span {
 }
 
 .auth-slot {
-  width: 0;
+  width: 420px;
+  flex: 0 0 420px;
+  margin-right: -420px;
   opacity: 0;
-  overflow: hidden;
+  overflow: visible;
   pointer-events: none;
-  transform: translateX(36px);
-  flex: 0 0 auto;
+  transform: translateX(40px);
   transition:
-    width var(--motion),
+    margin-right var(--motion),
     opacity var(--motion),
     transform var(--motion);
 }
 
 .stage.is-auth .auth-slot {
-  width: 420px;
-  max-width: 100%;
-  flex: 0 0 auto;
+  margin-right: 0;
   opacity: 1;
-  overflow: visible;
   pointer-events: auto;
   transform: none;
 }
 
 .auth-form {
+  width: 420px;
+  max-width: 100%;
+  box-sizing: border-box;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 24px;
@@ -286,15 +287,21 @@ h1 span {
     align-items: stretch;
   }
 
-  .stage:not(.is-auth) .auth-slot {
-    width: 100%;
-    height: 0;
-    transform: translateY(16px);
-  }
-
+  .auth-slot,
   .stage.is-auth .auth-slot {
     width: 100%;
-    transform: none;
+    flex: 0 0 auto;
+    margin-right: 0;
+  }
+
+  .stage:not(.is-auth) .auth-slot {
+    position: absolute;
+    width: 100%;
+    transform: translateY(24px);
+  }
+
+  .auth-form {
+    width: 100%;
   }
 }
 
