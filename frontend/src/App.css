@@ -1,19 +1,27 @@
 :root {
-  --bg: #e4dcf4;
-  --surface: #d8ceeb;
-  --input: #e9e1f7;
-  --border: #b8a8d9;
+  --bg: #9b7fe0;
+  --surface: #d5c4f2;
+  --input: #e4d7f8;
+  --border: #a78bdb;
   --text: #17142b;
-  --muted: #5c5470;
-  --accent: #6c4cff;
-  --accent-deep: #5939e8;
+  --muted: #3f3558;
+  --accent: #5b35ef;
+  --accent-deep: #4724d4;
+  --motion: 0.9s ease-in-out;
 }
 
+html,
 body {
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
-  background: var(--bg);
   color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 70% 55% at 8% 12%, #f0a8e8 0%, transparent 58%),
+    radial-gradient(ellipse 65% 50% at 96% 88%, #5d4dff 0%, transparent 52%),
+    radial-gradient(ellipse 45% 40% at 80% 8%, #ff9ec8 0%, transparent 55%),
+    linear-gradient(165deg, #c9a0ea 0%, #9b7fe0 48%, #6f5ad0 100%);
+  background-attachment: fixed;
 }
 
 .app {
@@ -22,17 +30,17 @@ body {
   overflow: hidden;
 }
 
-/* Small futuristic detail: a faint grid that fades toward the edges */
+/* Soft grid over the gradient — the one small tech detail */
 
 .atmosphere {
   position: fixed;
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(108, 76, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(108, 76, 255, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(40, 18, 90, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(40, 18, 90, 0.14) 1px, transparent 1px);
   background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse at 50% 42%, #000 10%, transparent 72%);
+  mask-image: radial-gradient(ellipse at 50% 42%, #000 18%, transparent 78%);
 }
 
 .stage {
@@ -44,22 +52,17 @@ body {
   justify-content: center;
   padding: 56px 8%;
   gap: 0;
+  transition: gap var(--motion);
 }
 
 .stage.is-auth {
-  justify-content: space-between;
-  gap: 48px;
+  justify-content: center;
+  gap: 56px;
 }
 
 .brand {
   max-width: 560px;
-  transition:
-    transform 0.55s ease,
-    max-width 0.55s ease;
-}
-
-.stage.is-auth .brand {
-  max-width: 420px;
+  flex: 0 1 560px;
 }
 
 .wordmark {
@@ -87,11 +90,6 @@ h1 {
   margin: 18px 0;
   letter-spacing: -2px;
   color: var(--text);
-  transition: font-size 0.55s ease;
-}
-
-.stage.is-auth h1 {
-  font-size: 36px;
 }
 
 h1 span {
@@ -152,11 +150,12 @@ h1 span {
   opacity: 0;
   overflow: hidden;
   pointer-events: none;
-  transform: translateX(28px);
+  transform: translateX(36px);
+  flex: 0 0 auto;
   transition:
-    width 0.55s ease,
-    opacity 0.45s ease 0.08s,
-    transform 0.45s ease 0.08s;
+    width var(--motion),
+    opacity var(--motion),
+    transform var(--motion);
 }
 
 .stage.is-auth .auth-slot {
@@ -250,8 +249,6 @@ h1 span {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .brand,
-  h1,
   .auth-slot {
     transition: none;
   }
@@ -269,10 +266,6 @@ h1 span {
 
   h1 {
     font-size: 42px;
-  }
-
-  .stage.is-auth h1 {
-    font-size: 30px;
   }
 
   .buttons {
