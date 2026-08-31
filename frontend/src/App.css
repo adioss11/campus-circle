@@ -17,10 +17,11 @@ body {
   color: var(--text);
   background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 70% 55% at 8% 12%, #f0a8e8 0%, transparent 58%),
-    radial-gradient(ellipse 65% 50% at 96% 88%, #5d4dff 0%, transparent 52%),
-    radial-gradient(ellipse 45% 40% at 80% 8%, #ff9ec8 0%, transparent 55%),
-    linear-gradient(165deg, #c9a0ea 0%, #9b7fe0 48%, #6f5ad0 100%);
+    radial-gradient(ellipse 90% 70% at 50% 42%, #a56ad8 0%, transparent 62%),
+    radial-gradient(ellipse 70% 55% at 8% 12%, #d46ad4 0%, transparent 58%),
+    radial-gradient(ellipse 65% 50% at 96% 88%, #4f3dff 0%, transparent 52%),
+    radial-gradient(ellipse 45% 40% at 80% 8%, #e06aa8 0%, transparent 55%),
+    linear-gradient(165deg, #b07ad4 0%, #8a62d0 48%, #5a48c4 100%);
   background-attachment: fixed;
 }
 
