@@ -23,18 +23,30 @@ export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
         onClick={(event) => event.stopPropagation()}
         onSubmit={(event) => {
           event.preventDefault();
-          if (!title.trim()) {
+          const nextTitle = title.trim();
+          const nextDay = day.trim();
+          const nextMonth = month.trim();
+          const nextTime = time.trim();
+          const nextLocation = location.trim();
+          const nextDescription = description.trim();
+          if (
+            !nextTitle ||
+            !nextDay ||
+            !nextMonth ||
+            !nextTime ||
+            !nextLocation ||
+            !nextDescription
+          ) {
             return;
           }
           onCreate({
             id: `posted-${Date.now()}`,
-            title: title.trim(),
-            day: day.trim() || "—",
-            month: month.trim() || "NOW",
-            time: time.trim() || "TBD",
-            location: location.trim() || "Campus",
-            description:
-              description.trim() || "A new campus event. RSVP to show up with people.",
+            title: nextTitle,
+            day: nextDay,
+            month: nextMonth,
+            time: nextTime,
+            location: nextLocation,
+            description: nextDescription,
             goingPeople: [],
             lookingPeople: [],
           });
@@ -63,6 +75,7 @@ export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
                 value={day}
                 placeholder="15"
                 onChange={(event) => setDay(event.target.value)}
+                required
               />
             </label>
             <label className="field" htmlFor="event-month">
@@ -72,6 +85,7 @@ export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
                 value={month}
                 placeholder="SEP"
                 onChange={(event) => setMonth(event.target.value)}
+                required
               />
             </label>
           </div>
@@ -82,6 +96,7 @@ export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
               value={time}
               placeholder="6:00 PM"
               onChange={(event) => setTime(event.target.value)}
+              required
             />
           </label>
           <label className="field" htmlFor="event-location">
@@ -91,6 +106,7 @@ export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
               value={location}
               placeholder="Student Center"
               onChange={(event) => setLocation(event.target.value)}
+              required
             />
           </label>
           <label className="field" htmlFor="event-description">
@@ -100,6 +116,7 @@ export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
               rows={3}
               value={description}
               onChange={(event) => setDescription(event.target.value)}
+              required
             />
           </label>
         </div>

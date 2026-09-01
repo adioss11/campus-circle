@@ -213,12 +213,16 @@ h1 span {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
   font-size: 13px;
   font-weight: 700;
   color: var(--muted);
 }
 
 .field input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: var(--input);
   border: 1px solid var(--border);
   border-radius: 12px;
