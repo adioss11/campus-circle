@@ -1,11 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type SidebarProps = {
-  onPost: () => void;
+  onPost?: () => void;
 };
 
 export function Sidebar({ onPost }: SidebarProps) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const onEvents = location.pathname === "/events";
+  const onProfile = location.pathname === "/profile";
 
   return (
     <aside className="sidebar">
@@ -14,15 +17,41 @@ export function Sidebar({ onPost }: SidebarProps) {
       <nav className="sidebar-nav">
         <button
           type="button"
-          className="sidebar-link is-current"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className={onEvents ? "sidebar-link is-current" : "sidebar-link"}
+          onClick={() => {
+            if (onEvents) {
+              window.location.reload();
+              return;
+            }
+            navigate("/events");
+          }}
         >
           Events
         </button>
-        <button type="button" className="sidebar-link" onClick={onPost}>
+        <button
+          type="button"
+          className="sidebar-link"
+          onClick={() => {
+            if (onPost) {
+              onPost();
+              return;
+            }
+            navigate("/events");
+          }}
+        >
           Post event
         </button>
-        <button type="button" className="sidebar-link" title="Coming soon">
+        <button
+          type="button"
+          className={onProfile ? "sidebar-link is-current" : "sidebar-link"}
+          onClick={() => {
+            if (onProfile) {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              return;
+            }
+            navigate("/profile");
+          }}
+        >
           Profile
         </button>
         <button
