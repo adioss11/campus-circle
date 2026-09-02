@@ -6,7 +6,7 @@ export const FAKE_EVENTS: CampusEvent[] = [
     title: "Welcome Back Social",
     day: "15",
     month: "SEP",
-    time: "6:00 PM",
+    time: "6:00 PM – 8:00 PM",
     location: "Student Center",
     description:
       "Low-key hang in the student center. Come meet people before the semester gets loud.",
@@ -18,7 +18,7 @@ export const FAKE_EVENTS: CampusEvent[] = [
     title: "International Potluck",
     day: "18",
     month: "SEP",
-    time: "5:30 PM",
+    time: "5:30 PM – 7:30 PM",
     location: "Campus Commons",
     description:
       "Bring a dish from home — or just bring yourself. Good food, no car required.",
@@ -30,7 +30,7 @@ export const FAKE_EVENTS: CampusEvent[] = [
     title: "Board Game Night",
     day: "21",
     month: "SEP",
-    time: "7:30 PM",
+    time: "7:30 PM – 10:00 PM",
     location: "Student Lounge",
     description:
       "Casual games, extra chairs, and no pressure to already have a group.",

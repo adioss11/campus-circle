@@ -211,6 +211,18 @@
   resize: vertical;
 }
 
+.char-count {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.form-error {
+  margin: 0;
+  color: #9b1c3a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .modal-actions {
   display: flex;
   justify-content: flex-end;
