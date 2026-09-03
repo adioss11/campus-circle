@@ -19,7 +19,7 @@ export function ProfilePage() {
               {FAKE_ME.initials}
             </div>
             <div>
-              <p className="eyebrow">YOUR PROFILE</p>
+              <p className="eyebrow">MY PROFILE</p>
               <h1>{FAKE_ME.name}</h1>
               <p>Fake preview for now. Photo upload comes later with a backend.</p>
             </div>

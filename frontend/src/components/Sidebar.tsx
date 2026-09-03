@@ -28,19 +28,21 @@ export function Sidebar({ onPost }: SidebarProps) {
         >
           Events
         </button>
-        <button
-          type="button"
-          className="sidebar-link"
-          onClick={() => {
-            if (onPost) {
-              onPost();
-              return;
-            }
-            navigate("/events");
-          }}
-        >
-          Post event
-        </button>
+        {onProfile ? null : (
+          <button
+            type="button"
+            className="sidebar-link"
+            onClick={() => {
+              if (onPost) {
+                onPost();
+                return;
+              }
+              navigate("/events");
+            }}
+          >
+            Post event
+          </button>
+        )}
         <button
           type="button"
           className={onProfile ? "sidebar-link is-current" : "sidebar-link"}
