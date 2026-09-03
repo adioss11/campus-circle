@@ -233,7 +233,7 @@
 @media (max-width: 800px) {
   .events-layout {
     grid-template-columns: 1fr;
-    padding: 16px 16px 48px;
+    padding: 16px 12px 48px;
     gap: 16px;
   }
 
@@ -243,24 +243,24 @@
     z-index: 4;
     width: 100%;
     align-self: stretch;
-    padding: 12px 12px 10px;
-    border-radius: 18px;
+    padding: 10px 8px 8px;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
   .sidebar-mark {
-    margin: 0 0 8px;
+    margin: 0 0 6px;
     text-align: center;
   }
 
   .sidebar-nav {
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: space-between;
     width: 100%;
-    gap: 10px;
+    gap: 8px;
   }
 
   .sidebar-link {

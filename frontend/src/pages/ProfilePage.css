@@ -1,5 +1,5 @@
 .profile-layout {
-  grid-template-columns: minmax(0, 680px);
+  grid-template-columns: minmax(0, 100%);
 }
 
 .profile-layout .sidebar {
@@ -32,6 +32,11 @@
   text-align: center;
   flex: 1 1 0;
   padding: 10px 0;
+}
+
+.profile-layout .feed {
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 .profile-header {
