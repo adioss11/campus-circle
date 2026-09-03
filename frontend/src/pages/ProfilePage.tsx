@@ -11,7 +11,7 @@ export function ProfilePage() {
   return (
     <div className="events-shell">
       <div className="atmosphere" aria-hidden="true" />
-      <div className="events-layout">
+      <div className="events-layout profile-layout">
         <Sidebar />
         <main className="feed">
           <header className="profile-header">
