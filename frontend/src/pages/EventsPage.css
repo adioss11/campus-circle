@@ -241,26 +241,32 @@
     position: sticky;
     top: 0;
     z-index: 4;
-    padding: 14px;
+    width: 100%;
+    align-self: stretch;
+    padding: 12px 12px 10px;
+    border-radius: 18px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
   .sidebar-mark {
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     text-align: center;
   }
 
   .sidebar-nav {
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
+    gap: 10px;
   }
 
   .sidebar-link {
     text-align: center;
+    flex: 1 1 0;
+    padding: 10px 0;
   }
 
   .feed-header h1 {
