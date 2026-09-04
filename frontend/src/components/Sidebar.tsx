@@ -24,6 +24,10 @@ export function Sidebar({ onPost }: SidebarProps) {
             className={onEvents ? "sidebar-link is-current" : "sidebar-link"}
             onClick={() => {
               if (onEvents) {
+                if ("scrollRestoration" in history) {
+                  history.scrollRestoration = "manual";
+                }
+                sessionStorage.setItem("campusCircleScrollTop", "1");
                 window.location.reload();
                 return;
               }

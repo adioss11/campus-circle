@@ -231,7 +231,33 @@
 }
 
 .logout-modal {
-  width: min(360px, 100%);
+  width: min(380px, 100%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.logout-modal h2 {
+  margin: 0;
+}
+
+.logout-modal .auth-copy {
+  margin: 0;
+  text-align: center;
+}
+
+.logout-modal .modal-actions {
+  width: 100%;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.logout-modal .modal-actions .secondary-button,
+.logout-modal .modal-actions .primary-button {
+  flex: 1 1 0;
 }
 
 @media (max-width: 800px) {

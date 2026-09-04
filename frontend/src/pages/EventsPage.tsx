@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { EventCard } from "../components/EventCard";
 import { PostEventModal } from "../components/PostEventModal";
 import { Sidebar } from "../components/Sidebar";
@@ -9,6 +9,16 @@ import "./EventsPage.css";
 export function EventsPage() {
   const [events, setEvents] = useState<CampusEvent[]>(FAKE_EVENTS);
   const [posting, setPosting] = useState(false);
+
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+    if (sessionStorage.getItem("campusCircleScrollTop") === "1") {
+      sessionStorage.removeItem("campusCircleScrollTop");
+    }
+  }, []);
 
   return (
     <div className="events-shell">
