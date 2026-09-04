@@ -230,10 +230,40 @@
   margin-top: 18px;
 }
 
+.logout-modal {
+  width: min(380px, 100%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.logout-modal h2 {
+  margin: 0;
+}
+
+.logout-modal .auth-copy {
+  margin: 0;
+  text-align: center;
+}
+
+.logout-modal .modal-actions {
+  width: 100%;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.logout-modal .modal-actions .secondary-button,
+.logout-modal .modal-actions .primary-button {
+  flex: 1 1 0;
+}
+
 @media (max-width: 800px) {
   .events-layout {
     grid-template-columns: 1fr;
-    padding: 16px 16px 48px;
+    padding: 16px 12px 48px;
     gap: 16px;
   }
 
@@ -241,16 +271,32 @@
     position: sticky;
     top: 0;
     z-index: 4;
-    padding: 14px;
+    width: 100%;
+    align-self: stretch;
+    padding: 10px 8px 8px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .sidebar-mark {
-    margin: 0 8px 10px;
+    margin: 0 0 6px;
+    text-align: center;
   }
 
   .sidebar-nav {
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .sidebar-link {
+    text-align: center;
+    flex: 1 1 0;
+    padding: 10px 0;
   }
 
   .feed-header h1 {
