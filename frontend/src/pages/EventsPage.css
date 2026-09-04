@@ -230,6 +230,10 @@
   margin-top: 18px;
 }
 
+.logout-modal {
+  width: min(360px, 100%);
+}
+
 @media (max-width: 800px) {
   .events-layout {
     grid-template-columns: 1fr;
