@@ -79,8 +79,8 @@ export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
       >
         <h2 id="post-event-title">Post an event</h2>
         <p className="auth-copy">
-          Preview only. This stays in your browser until you refresh. Locations
-          are a fake campus list for now.
+          Prototype only. This stays in your browser until you refresh. Locations
+          are a mock campus list until the database is connected.
         </p>
 
         <div className="fields">

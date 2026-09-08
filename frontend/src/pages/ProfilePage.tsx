@@ -21,7 +21,9 @@ export function ProfilePage() {
             <div>
               <p className="eyebrow">MY PROFILE</p>
               <h1>{FAKE_ME.name}</h1>
-              <p>Fake preview for now. Photo upload comes later with a backend.</p>
+              <p>
+                Frontend prototype. Photo upload comes with the backend.
+              </p>
             </div>
           </header>
 
