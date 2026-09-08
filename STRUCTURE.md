@@ -1,11 +1,11 @@
-# Step 1: Folder structure
+# Folder map
 
-This file is a map of the project. It does not contain app features yet.
+This file explains why the monorepo folders exist.
 
 CampusCircle is two programs that talk to each other over HTTP:
 
-- **frontend** — React + TypeScript. This is what students see in the browser.
-- **backend** — FastAPI + Python. This stores users, events, and RSVPs, and answers API requests.
+- **frontend** — React + TypeScript. Students see this in the browser. **UI is complete** as a prototype with mock data.
+- **backend** — FastAPI + Python. Will store users, events, and RSVPs. Structure is ready; implementation is next.
 
 They live in **one git repo** (a monorepo) so you can work on both sides together, but they stay in separate folders because they use different languages and tools.
 
@@ -14,7 +14,7 @@ campus-circle/
 ├── README.md                 # what the product is
 ├── STRUCTURE.md              # this file: why folders exist
 ├── frontend/                 # React + TypeScript (already started)
-└── backend/                  # FastAPI (empty on purpose for now)
+└── backend/                  # FastAPI — structure ready, implementation next
 ```
 
 During development you will usually run **two servers**:

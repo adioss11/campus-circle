@@ -29,7 +29,7 @@ export function AuthForm({
       <p className="eyebrow">{isSignup ? "NEW HERE" : "WELCOME BACK"}</p>
       <h2>{isSignup ? "Create an account" : "Log in"}</h2>
       <p className="auth-copy">
-        Preview only. Nothing is saved yet — the API comes later.
+        Prototype only. Nothing is saved yet — the API comes next.
       </p>
 
       <div className="fields">

@@ -2,9 +2,9 @@
 
 Python FastAPI app. This is the API server. It will talk to PostgreSQL and send JSON to the React frontend.
 
-Nothing runs from this folder yet. The `app/` subfolders are empty on purpose.
+The folder layout is in place. API routes, models, and database work come next (the React UI is already built against mock data).
 
-Later (not this step):
+Planned next steps:
 
 - `app/main.py` starts FastAPI
 - `requirements.txt` lists Python packages
