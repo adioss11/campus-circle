@@ -1,9 +1,24 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
-from app.database import check_database_connection
+from app.database import Base, check_database_connection, engine
+from app.routers import events
 
-# Create the API application. This is the object uvicorn starts.
-app = FastAPI(title="CampusCircle API")
+# Import models so Base.metadata knows which tables to create.
+from app.models import event as event_model  # noqa: F401
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """Runs once when the server starts, then again when it shuts down."""
+    # Option 1: if the events table does not exist yet, create it.
+    Base.metadata.create_all(bind=engine)
+    yield
+
+
+app = FastAPI(title="CampusCircle API", lifespan=lifespan)
+app.include_router(events.router)
 
 
 @app.get("/")

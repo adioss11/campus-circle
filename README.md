@@ -13,11 +13,12 @@ Campus events already exist, but they are often only posted on university social
 | Profile page | Done (mock data) |
 | FastAPI hello + health routes | Done |
 | PostgreSQL connection via `.env` | Done |
-| Create / list events API | Next |
+| Create event API (`POST /events`) | Done |
+| List events API (`GET /events`) | Next |
 | Wire frontend to save events & RSVPs | Later |
 | Real login / auth | Later |
 
-**Frontend** is a working React + TypeScript prototype. **Backend** has a running FastAPI app connected to local PostgreSQL. Event tables and create/list routes are the next step. Posted events still disappear on refresh until the frontend is wired to the API.
+**Frontend** is a working React + TypeScript prototype. **Backend** can create events in PostgreSQL via `POST /events`. Listing events and wiring the React UI come next. Posted events in the browser still disappear on refresh until that wiring is done.
 
 ## Screenshots
 
@@ -44,14 +45,15 @@ Campus events already exist, but they are often only posted on university social
 - Profile page with avatar placeholder and event lists (mock)
 - Logout confirmation dialog
 - Backend `GET /` and `GET /health` (health also checks the database)
+- Backend `POST /events` — saves an event row in PostgreSQL
 
-Not yet: saved events after refresh, saved RSVPs, real accounts, photo upload, clubs, chat, maps, or admin tools.
+Not yet: list-events API, saved events after refresh in the UI, saved RSVPs, real accounts, photo upload, clubs, chat, maps, or admin tools.
 
 ## Tech stack
 
 - **Frontend:** React + TypeScript (Vite)
 - **Backend:** FastAPI
-- **Database:** PostgreSQL (connected; no event tables yet)
+- **Database:** PostgreSQL (`events` table created on API startup)
 
 ## Run the frontend
 
@@ -100,9 +102,9 @@ campus-circle/
     └── app/
         ├── main.py           # FastAPI app
         ├── database.py       # Postgres connection
-        ├── routers/          # HTTP URLs (next: events)
-        ├── models/           # PostgreSQL tables (next: events)
-        └── schemas/          # JSON in/out (next: events)
+        ├── routers/          # HTTP URLs (`events.py`)
+        ├── models/           # PostgreSQL tables (`event.py`)
+        └── schemas/          # JSON in/out (`event.py`)
 ```
 
 Read [STRUCTURE.md](STRUCTURE.md) for why each folder exists.
