@@ -13,7 +13,13 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 - `.env.example` — safe template you can copy (committed)
 - `.env` — your local secrets (gitignored; create it yourself)
 
-Still no event routes or tables yet.
+### Step C — create events (priority 1)
+- `app/models/event.py` — `events` table
+- `app/schemas/event.py` — create/response JSON shapes
+- `app/routers/events.py` — `POST /events`
+- On startup, `create_all` creates the table if it is missing
+
+List-events (`GET /events`) comes next.
 
 ## One-time local database setup
 
@@ -45,7 +51,22 @@ Then open:
 
 - http://localhost:8000/ — hello message
 - http://localhost:8000/health — should include `"database": "ok"`
-- http://localhost:8000/docs — interactive API docs
+- http://localhost:8000/docs — interactive API docs (try **POST /events** here)
+
+Example create (after the server is running):
+
+```bash
+curl -s -X POST http://localhost:8000/events \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Welcome Back Social",
+    "day": "15",
+    "month": "SEP",
+    "time": "6:00 PM – 8:00 PM",
+    "location": "Student Center",
+    "description": "Low-key hang before the semester gets loud."
+  }'
+```
 
 Stop the server with `Ctrl+C`. Leave the virtual environment with `deactivate`.
 

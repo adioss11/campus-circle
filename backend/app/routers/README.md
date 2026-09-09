@@ -2,10 +2,6 @@
 
 URL endpoints. Each file is a group of related HTTP routes.
 
-Planned CampusCircle groups (files later, not now):
+- `events.py` — `POST /events` (create one event)
 
-- users — sign up, login, profile
-- events — list events, event details, admin create
-- rsvps — Going / Looking for someone to go with
-
-Put “what URL does, and in what order” here. Do not define database tables here (`models/`) and do not define JSON field lists here (`schemas/`).
+Put “what URL does” here. Do not define database tables here (`models/`) and do not define JSON field lists here (`schemas/`).
