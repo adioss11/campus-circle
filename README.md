@@ -9,16 +9,17 @@ Campus events already exist, but they are often only posted on university social
 | Area | Status |
 | --- | --- |
 | Welcome, login, and signup screens | Done (mock auth — any credentials work) |
-| Events feed, post-event form, RSVP UI | Done (frontend mock data) |
+| Events feed, post-event form, RSVP UI | Done (events load/save via API) |
 | Profile page | Done (mock data) |
 | FastAPI hello + health routes | Done |
 | PostgreSQL connection via `.env` | Done |
 | Create event API (`POST /events`) | Done |
 | List events API (`GET /events`) | Done |
-| Wire frontend to save events & RSVPs | Next |
+| Wire frontend events to API | Done |
+| Save RSVP changes | Next |
 | Real login / auth | Later |
 
-**Frontend** is a working React + TypeScript prototype. **Backend** can create and list events in PostgreSQL (`POST /events`, `GET /events`). The React UI still uses mock data until we wire it to these URLs.
+**Frontend** Events page loads from `GET /events` and posts with `POST /events`. Refresh keeps posted events. RSVP clicks and the profile page are still mock. Auth is still mock.
 
 ## Screenshots
 
@@ -39,16 +40,16 @@ Campus events already exist, but they are often only posted on university social
 
 ## What’s working today
 
-- Browse campus events (title, date, time, location, description) from mock data
+- Browse campus events from the API (PostgreSQL), not mock feed data
 - RSVP UI: **Going** and **Looking for someone** (hover / tap name lists; clicks not saved yet)
-- Post-event form with validated dropdowns, start/end times, and campus locations (browser-only for now)
+- Post-event form saves through the API (survives refresh)
 - Profile page with avatar placeholder and event lists (mock)
 - Logout confirmation dialog
 - Backend `GET /` and `GET /health` (health also checks the database)
-- Backend `POST /events` — saves an event row in PostgreSQL
-- Backend `GET /events` — lists saved events (newest first)
+- Backend `POST /events` / `GET /events`
+- CORS enabled so the React app (port 5174) can call the API (port 8000)
 
-Not yet: React wired to the API (events still mock in the UI), saved RSVPs, real accounts, photo upload, clubs, chat, maps, or admin tools.
+Not yet: saved RSVPs, profile from RSVPs, real accounts, photo upload, clubs, chat, maps, or admin tools.
 
 ## Tech stack
 
@@ -64,7 +65,9 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Log in with any email and password (credentials are not checked yet).
+Open [http://localhost:5174](http://localhost:5174). Log in with any email and password (credentials are not checked yet).
+
+Keep the backend running on port 8000 at the same time, or the Events page cannot load/save.
 
 ## Run the backend
 
@@ -92,7 +95,7 @@ campus-circle/
 ├── docs/screenshots/         # README screenshots
 ├── frontend/                 # React + TypeScript (Vite)
 │   └── src/
-│       ├── api/              # backend calls (next)
+│       ├── api/              # backend calls (`events.ts`)
 │       ├── components/       # reusable UI
 │       ├── data/             # mock events and profile data
 │       ├── pages/            # Welcome, Events, Profile

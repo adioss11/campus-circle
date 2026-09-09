@@ -1,7 +1,8 @@
 # api
 
-Functions that call the FastAPI backend (`fetch` or similar).
+Functions that call the FastAPI backend (`fetch`).
 
-Example idea (not real code yet): `getEvents()` → `GET /events`.
+- `config.ts` — API base URL (`http://127.0.0.1:8000` by default)
+- `events.ts` — `getEvents()`, `createEvent()`
 
-Pages and components should call these functions instead of writing `fetch` inline. Then a URL change happens in one place.
+Pages should call these helpers instead of writing `fetch` inline.

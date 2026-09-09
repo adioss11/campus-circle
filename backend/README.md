@@ -22,7 +22,12 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 ### Step D — list events (priority 2)
 - `GET /events` — returns all saved events (newest id first)
 
-Frontend wiring (so the React app uses these URLs) comes next.
+### Step E — wire React events to the API (priority 3)
+- CORS on the API so the browser allows calls from the Vite app
+- `frontend/src/api/events.ts` — `getEvents()` / `createEvent()`
+- Events page loads and posts through those helpers (refresh keeps events)
+
+RSVP save comes next.
 
 ## One-time local database setup
 

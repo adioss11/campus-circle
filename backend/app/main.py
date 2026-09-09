@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, check_database_connection, engine
 from app.routers import events
@@ -18,6 +19,17 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(title="CampusCircle API", lifespan=lifespan)
+
+# CORS = browser rule for "page on port A calling API on port B".
+# React runs on 5174; the API runs on 8000. Without this, the browser blocks fetch.
+# allow_origins=["*"] is fine while we have no cookie auth. Tighten later with login.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(events.router)
 
 
