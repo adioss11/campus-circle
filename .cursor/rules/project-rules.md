@@ -4,6 +4,7 @@ I am a beginner building my first full-stack project. Teach me; do not assume I 
 
 ## How to work with me
 
+- Teach in plain language with tables, analogies, and “what you should see.” Assume I am new.
 - Explain the plan before changing code.
 - Do not generate large parts of the app at once. One step at a time.
 - Prefer small files, clear names, and simple code.
@@ -12,6 +13,7 @@ I am a beginner building my first full-stack project. Teach me; do not assume I 
 - Do not add libraries unless necessary; explain why and ask first when possible.
 - Do not add authentication until I ask. Core events/RSVP/profile logic comes first.
 - After every major step we finish, update the root `README.md` status so the repo matches reality.
+- Say clearly what is backend-only vs visible in the frontend. Do not assume I know they are separate.
 
 ## Frontend
 
