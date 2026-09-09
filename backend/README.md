@@ -19,7 +19,10 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 - `app/routers/events.py` — `POST /events`
 - On startup, `create_all` creates the table if it is missing
 
-List-events (`GET /events`) comes next.
+### Step D — list events (priority 2)
+- `GET /events` — returns all saved events (newest id first)
+
+Frontend wiring (so the React app uses these URLs) comes next.
 
 ## One-time local database setup
 
@@ -51,9 +54,15 @@ Then open:
 
 - http://localhost:8000/ — hello message
 - http://localhost:8000/health — should include `"database": "ok"`
-- http://localhost:8000/docs — interactive API docs (try **POST /events** here)
+- http://localhost:8000/docs — interactive API docs (try **GET /events** and **POST /events**)
 
-Example create (after the server is running):
+List all saved events:
+
+```bash
+curl -s http://localhost:8000/events
+```
+
+Create one event:
 
 ```bash
 curl -s -X POST http://localhost:8000/events \

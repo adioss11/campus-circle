@@ -14,11 +14,11 @@ Campus events already exist, but they are often only posted on university social
 | FastAPI hello + health routes | Done |
 | PostgreSQL connection via `.env` | Done |
 | Create event API (`POST /events`) | Done |
-| List events API (`GET /events`) | Next |
-| Wire frontend to save events & RSVPs | Later |
+| List events API (`GET /events`) | Done |
+| Wire frontend to save events & RSVPs | Next |
 | Real login / auth | Later |
 
-**Frontend** is a working React + TypeScript prototype. **Backend** can create events in PostgreSQL via `POST /events`. Listing events and wiring the React UI come next. Posted events in the browser still disappear on refresh until that wiring is done.
+**Frontend** is a working React + TypeScript prototype. **Backend** can create and list events in PostgreSQL (`POST /events`, `GET /events`). The React UI still uses mock data until we wire it to these URLs.
 
 ## Screenshots
 
@@ -46,8 +46,9 @@ Campus events already exist, but they are often only posted on university social
 - Logout confirmation dialog
 - Backend `GET /` and `GET /health` (health also checks the database)
 - Backend `POST /events` — saves an event row in PostgreSQL
+- Backend `GET /events` — lists saved events (newest first)
 
-Not yet: list-events API, saved events after refresh in the UI, saved RSVPs, real accounts, photo upload, clubs, chat, maps, or admin tools.
+Not yet: React wired to the API (events still mock in the UI), saved RSVPs, real accounts, photo upload, clubs, chat, maps, or admin tools.
 
 ## Tech stack
 

@@ -8,6 +8,17 @@ from app.schemas.event import EventCreate, EventOut
 router = APIRouter(prefix="/events", tags=["events"])
 
 
+@router.get("", response_model=list[EventOut])
+def list_events(db: Session = Depends(get_db)):
+    """
+    Return every event row from PostgreSQL.
+
+    Newest saved first (highest id first). That is a simple stand-in until
+    we store real dates we can sort by.
+    """
+    return db.query(Event).order_by(Event.id.desc()).all()
+
+
 @router.post("", response_model=EventOut, status_code=201)
 def create_event(payload: EventCreate, db: Session = Depends(get_db)):
     """
