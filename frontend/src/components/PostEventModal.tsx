@@ -13,9 +13,14 @@ import {
 type PostEventModalProps = {
   onClose: () => void;
   onCreate: (event: CampusEvent) => void;
+  saving?: boolean;
 };
 
-export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
+export function PostEventModal({
+  onClose,
+  onCreate,
+  saving = false,
+}: PostEventModalProps) {
   const [title, setTitle] = useState("");
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
@@ -39,6 +44,9 @@ export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
         onClick={(event) => event.stopPropagation()}
         onSubmit={(event) => {
           event.preventDefault();
+          if (saving) {
+            return;
+          }
           const nextTitle = title.trim();
           const nextDay = day.trim();
           const nextMonth = month.trim();
@@ -79,8 +87,8 @@ export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
       >
         <h2 id="post-event-title">Post an event</h2>
         <p className="auth-copy">
-          Prototype only. This stays in your browser until you refresh. Locations
-          are a mock campus list until the database is connected.
+          Saved to the CampusCircle API and PostgreSQL. Refresh keeps it. RSVP
+          lists are still empty until we wire that next.
         </p>
 
         <div className="fields">
@@ -210,11 +218,16 @@ export function PostEventModal({ onClose, onCreate }: PostEventModalProps) {
         </div>
 
         <div className="modal-actions">
-          <button type="button" className="secondary-button" onClick={onClose}>
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={onClose}
+            disabled={saving}
+          >
             Cancel
           </button>
-          <button type="submit" className="primary-button">
-            Post
+          <button type="submit" className="primary-button" disabled={saving}>
+            {saving ? "Saving…" : "Post"}
           </button>
         </div>
       </form>

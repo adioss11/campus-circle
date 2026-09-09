@@ -19,7 +19,7 @@ campus-circle/
 
 During development you will usually run **two servers**:
 
-1. Vite on port 5173 (the React app)
+1. Vite on port 5174 (the React app)
 2. FastAPI on port 8000 (the API)
 
 The browser talks to FastAPI. FastAPI talks to PostgreSQL. PostgreSQL is a database **server**, not a folder of files you edit. You will connect to it later from `backend/`.
