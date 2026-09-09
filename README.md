@@ -6,14 +6,18 @@ Campus events already exist, but they are often only posted on university social
 
 ## Status
 
-**Frontend is complete** as a working React + TypeScript prototype. Screens use **mock data** in the browser (no API calls yet). Auth, RSVP persistence, and photo upload will wire up when the FastAPI + PostgreSQL backend is added.
-
 | Area | Status |
 | --- | --- |
-| Welcome, login, and signup screens | Done (prototype navigation) |
-| Events feed, post-event form, RSVP UI | Done (mock data) |
+| Welcome, login, and signup screens | Done (mock auth — any credentials work) |
+| Events feed, post-event form, RSVP UI | Done (frontend mock data) |
 | Profile page | Done (mock data) |
-| FastAPI + PostgreSQL + real auth / RSVP | Next |
+| FastAPI hello + health routes | Done |
+| PostgreSQL connection via `.env` | Done |
+| Create / list events API | Next |
+| Wire frontend to save events & RSVPs | Later |
+| Real login / auth | Later |
+
+**Frontend** is a working React + TypeScript prototype. **Backend** has a running FastAPI app connected to local PostgreSQL. Event tables and create/list routes are the next step. Posted events still disappear on refresh until the frontend is wired to the API.
 
 ## Screenshots
 
@@ -32,21 +36,22 @@ Campus events already exist, but they are often only posted on university social
 ### Profile
 ![Profile page](docs/screenshots/05-profile.png)
 
-## What’s in the frontend prototype
+## What’s working today
 
-- Browse campus events (title, date, time, location, description)
-- RSVP UI: **Going** and **Looking for someone** (hover / tap name lists)
-- Post-event form with validated dropdowns, start/end times, and campus locations
-- Profile page with avatar placeholder and event lists
+- Browse campus events (title, date, time, location, description) from mock data
+- RSVP UI: **Going** and **Looking for someone** (hover / tap name lists; clicks not saved yet)
+- Post-event form with validated dropdowns, start/end times, and campus locations (browser-only for now)
+- Profile page with avatar placeholder and event lists (mock)
 - Logout confirmation dialog
+- Backend `GET /` and `GET /health` (health also checks the database)
 
-Not in this version yet: real accounts, saved RSVPs, photo upload, clubs, chat, maps, or admin tools.
+Not yet: saved events after refresh, saved RSVPs, real accounts, photo upload, clubs, chat, maps, or admin tools.
 
 ## Tech stack
 
-- **Frontend:** React + TypeScript (Vite) — complete for v1 UI
-- **Backend:** FastAPI — folder structure ready, implementation next
-- **Database:** PostgreSQL — planned with the API
+- **Frontend:** React + TypeScript (Vite)
+- **Backend:** FastAPI
+- **Database:** PostgreSQL (connected; no event tables yet)
 
 ## Run the frontend
 
@@ -56,7 +61,24 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Log in with any email and password to explore the prototype (credentials are not checked until the API exists).
+Open [http://localhost:5173](http://localhost:5173). Log in with any email and password (credentials are not checked yet).
+
+## Run the backend
+
+See [backend/README.md](backend/README.md) for PostgreSQL setup and `.env`.
+
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env   # once
+uvicorn app.main:app --reload
+```
+
+- http://localhost:8000/ — hello JSON
+- http://localhost:8000/health — should show `"database": "ok"`
+- http://localhost:8000/docs — interactive API docs
 
 ## Repository layout
 
@@ -65,18 +87,22 @@ This repo is a **monorepo**: the React app and the FastAPI app live side by side
 ```
 campus-circle/
 ├── docs/screenshots/         # README screenshots
-├── frontend/                 # React + TypeScript (Vite) — UI complete
+├── frontend/                 # React + TypeScript (Vite)
 │   └── src/
 │       ├── api/              # backend calls (next)
 │       ├── components/       # reusable UI
 │       ├── data/             # mock events and profile data
 │       ├── pages/            # Welcome, Events, Profile
 │       └── types/            # TypeScript shapes (Event, User, …)
-└── backend/                  # FastAPI — structure ready
+└── backend/                  # FastAPI + PostgreSQL
+    ├── .env.example
+    ├── requirements.txt
     └── app/
-        ├── routers/          # HTTP URLs
-        ├── models/           # PostgreSQL tables
-        └── schemas/          # JSON in/out of the API
+        ├── main.py           # FastAPI app
+        ├── database.py       # Postgres connection
+        ├── routers/          # HTTP URLs (next: events)
+        ├── models/           # PostgreSQL tables (next: events)
+        └── schemas/          # JSON in/out (next: events)
 ```
 
 Read [STRUCTURE.md](STRUCTURE.md) for why each folder exists.

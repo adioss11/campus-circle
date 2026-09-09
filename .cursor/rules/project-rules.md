@@ -1,8 +1,40 @@
-I am a beginner building my first full-stack software engineering project.
+# CampusCircle — Cursor rules
 
-Do not generate large parts of the application at once.
-Explain the plan before changing code.
-Keep the architecture simple.
-Do not add new libraries unless you explain why they are needed.
-Prefer small, understandable components and functions.
-After writing code, explain what changed and how I should test it.
+I am a beginner building my first full-stack project. Teach me; do not assume I already know this.
+
+## How to work with me
+
+- Explain the plan before changing code.
+- Do not generate large parts of the app at once. One step at a time.
+- Prefer small files, clear names, and simple code.
+- After each change, explain what changed and how to test it.
+- When there is more than one reasonable approach, give options and wait for my choice.
+- Do not add libraries unless necessary; explain why and ask first when possible.
+- Do not add authentication until I ask. Core events/RSVP/profile logic comes first.
+- After every major step we finish, update the root `README.md` status so the repo matches reality.
+
+## Frontend
+
+- React + Vite + TypeScript with `BrowserRouter`.
+- Pages in `frontend/src/pages/`; reusable UI in `frontend/src/components/`.
+- Types in `frontend/src/types/`; API calls in `frontend/src/api/` (no scattered `fetch` in UI).
+- Keep using mock data in `frontend/src/data/` until we intentionally wire a feature.
+- When wiring the API, change only what that step needs — do not redesign the UI.
+
+## Backend
+
+- FastAPI + PostgreSQL.
+- Routes in `routers/`, tables in `models/`, JSON shapes in `schemas/`.
+- Secrets in `.env` (gitignored), never in source.
+- No services/repositories layer, Docker, Alembic, or deploy setup unless I ask.
+- Work priorities in order: create events → get events → persist via frontend → RSVPs → profile → auth later.
+
+## Database
+
+- Prefer simple tables and clear column names that match what the app actually uses.
+- One model file ≈ one table. Do not hide SQLAlchemy models inside route files.
+- Explain schema choices in plain language before creating or changing tables.
+- Start without migration tools; create tables in a simple, explicit way until I ask for Alembic.
+- Do not invent extra columns “for later” unless we need them for the current step.
+- RSVP data belongs in its own table when we get there, not packed into the events table as permanent lists.
+- Never commit real database passwords or dump files with secrets.
