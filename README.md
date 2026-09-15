@@ -16,10 +16,11 @@ Campus events already exist, but they are often only posted on university social
 | Create event API (`POST /events`) | Done |
 | List events API (`GET /events`) | Done |
 | Wire frontend events to API | Done |
-| Save RSVP changes | Next |
+| Save RSVP changes | Done |
+| Profile from RSVPs | Next |
 | Real login / auth | Later |
 
-**Frontend** Events page loads from `GET /events` and posts with `POST /events`. Refresh keeps posted events. RSVP clicks and the profile page are still mock. Auth is still mock.
+**Frontend** Events page loads from `GET /events` and posts with `POST /events`. Clicking **Going** / **Looking for someone** saves an RSVP for the demo user Alex Kim. Refresh keeps events and RSVPs. The profile page is still mock. Auth is still mock.
 
 ## Screenshots
 
@@ -41,21 +42,21 @@ Campus events already exist, but they are often only posted on university social
 ## What’s working today
 
 - Browse campus events from the API (PostgreSQL), not mock feed data
-- RSVP UI: **Going** and **Looking for someone** (hover / tap name lists; clicks not saved yet)
+- RSVP: **Going** and **Looking for someone** (click saves for demo user Alex Kim; hover shows names)
 - Post-event form saves through the API (survives refresh)
 - Profile page with avatar placeholder and event lists (mock)
 - Logout confirmation dialog
 - Backend `GET /` and `GET /health` (health also checks the database)
-- Backend `POST /events` / `GET /events`
+- Backend `POST /events` / `GET /events` / `POST /events/{id}/rsvp`
 - CORS enabled so the React app (port 5174) can call the API (port 8000)
 
-Not yet: saved RSVPs, profile from RSVPs, real accounts, photo upload, clubs, chat, maps, or admin tools.
+Not yet: profile built from RSVPs, real accounts, photo upload, clubs, chat, maps, or admin tools.
 
 ## Tech stack
 
 - **Frontend:** React + TypeScript (Vite)
 - **Backend:** FastAPI
-- **Database:** PostgreSQL (`events` table created on API startup)
+- **Database:** PostgreSQL (`events`, `users`, and `rsvps` tables created on API startup)
 
 ## Run the frontend
 

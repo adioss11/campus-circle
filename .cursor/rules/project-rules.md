@@ -13,6 +13,7 @@ I am a beginner building my first full-stack project. Teach me; do not assume I 
 - Do not add libraries unless necessary; explain why and ask first when possible.
 - Do not add authentication until I ask. Core events/RSVP/profile logic comes first.
 - After every major step we finish, update the root `README.md` status so the repo matches reality.
+- Explain important building blocks in plain language: where data lives (Postgres vs React state vs `.json` files), how to start/stop services, what SQLAlchemy/JSON/HTTP status codes are, and what is backend-only vs visible in the UI.
 - Say clearly what is backend-only vs visible in the frontend. Do not assume I know they are separate.
 
 ## Frontend

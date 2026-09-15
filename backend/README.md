@@ -27,7 +27,14 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 - `frontend/src/api/events.ts` — `getEvents()` / `createEvent()`
 - Events page loads and posts through those helpers (refresh keeps events)
 
-RSVP save comes next.
+### Step F — save RSVPs (priority 4)
+- `users` table with a demo row: Alex Kim (not real login)
+- `rsvps` table linking a user to an event with `going` or `looking`
+- `POST /events/{id}/rsvp` toggles or switches that RSVP
+- Event JSON includes `goingPeople` and `lookingPeople` name lists
+
+Profile from RSVPs comes next.
+
 
 ## One-time local database setup
 
@@ -59,7 +66,7 @@ Then open:
 
 - http://localhost:8000/ — hello message
 - http://localhost:8000/health — should include `"database": "ok"`
-- http://localhost:8000/docs — interactive API docs (try **GET /events** and **POST /events**)
+- http://localhost:8000/docs — interactive API docs (try **GET /events**, **POST /events**, and **POST /events/{id}/rsvp**)
 
 List all saved events:
 
@@ -80,6 +87,14 @@ curl -s -X POST http://localhost:8000/events \
     "location": "Student Center",
     "description": "Low-key hang before the semester gets loud."
   }'
+```
+
+Toggle the demo user (Alex Kim) to Going on event 1 (use a real id from GET /events):
+
+```bash
+curl -s -X POST http://localhost:8000/events/1/rsvp \
+  -H "Content-Type: application/json" \
+  -d '{"status":"going"}'
 ```
 
 Stop the server with `Ctrl+C`. Leave the virtual environment with `deactivate`.

@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { createEvent, getEvents } from "../api/events";
+import { toggleRsvp, type RsvpStatus } from "../api/rsvps";
 import { EventCard } from "../components/EventCard";
 import { PostEventModal } from "../components/PostEventModal";
 import { Sidebar } from "../components/Sidebar";
@@ -11,6 +12,8 @@ export function EventsPage() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [rsvpError, setRsvpError] = useState<string | null>(null);
+  const [rsvpBusyId, setRsvpBusyId] = useState<string | null>(null);
   const [posting, setPosting] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -67,11 +70,36 @@ export function EventsPage() {
           {loading ? <p className="feed-status">Loading events…</p> : null}
           {loadError ? <p className="feed-status feed-status-error">{loadError}</p> : null}
           {saveError ? <p className="feed-status feed-status-error">{saveError}</p> : null}
+          {rsvpError ? <p className="feed-status feed-status-error">{rsvpError}</p> : null}
           {!loading && !loadError && events.length === 0 ? (
             <p className="feed-status">No events yet. Post the first one.</p>
           ) : null}
           {events.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <EventCard
+              key={event.id}
+              event={event}
+              rsvpBusy={rsvpBusyId === event.id}
+              onRsvp={(status: RsvpStatus) => {
+                void (async () => {
+                  setRsvpBusyId(event.id);
+                  setRsvpError(null);
+                  try {
+                    const updated = await toggleRsvp(event.id, status);
+                    setEvents((current) =>
+                      current.map((item) =>
+                        item.id === updated.id ? updated : item,
+                      ),
+                    );
+                  } catch {
+                    setRsvpError(
+                      "Could not save RSVP. Is the API running on port 8000?",
+                    );
+                  } finally {
+                    setRsvpBusyId(null);
+                  }
+                })();
+              }}
+            />
           ))}
         </main>
       </div>

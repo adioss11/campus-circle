@@ -3,18 +3,25 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.database import Base, check_database_connection, engine
-from app.routers import events
+from app.database import Base, SessionLocal, check_database_connection, engine
+from app.demo_user import ensure_demo_user
+from app.routers import events, rsvps
 
 # Import models so Base.metadata knows which tables to create.
 from app.models import event as event_model  # noqa: F401
+from app.models import rsvp as rsvp_model  # noqa: F401
+from app.models import user as user_model  # noqa: F401
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     """Runs once when the server starts, then again when it shuts down."""
-    # Option 1: if the events table does not exist yet, create it.
     Base.metadata.create_all(bind=engine)
+    db = SessionLocal()
+    try:
+        ensure_demo_user(db)
+    finally:
+        db.close()
     yield
 
 
@@ -31,6 +38,7 @@ app.add_middleware(
 )
 
 app.include_router(events.router)
+app.include_router(rsvps.router)
 
 
 @app.get("/")

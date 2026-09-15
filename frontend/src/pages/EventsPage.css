@@ -131,6 +131,11 @@
   font-weight: 800;
 }
 
+.rsvp.is-mine .primary-button,
+.rsvp.is-mine .secondary-button {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
 .rsvp-popover {
   position: absolute;
   left: 0;

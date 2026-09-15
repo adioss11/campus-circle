@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { CURRENT_USER_NAME } from "../api/currentUser";
 import type { CampusEvent } from "../types/event";
 import { coverForEvent } from "../data/fakeEvents";
 
 type EventCardProps = {
   event: CampusEvent;
+  onRsvp?: (kind: RsvpKind) => void;
+  rsvpBusy?: boolean;
 };
 
 type RsvpKind = "going" | "looking";
@@ -17,32 +20,44 @@ function RsvpMenu({
   label,
   names,
   open,
+  mine,
+  busy,
   onOpen,
   onClose,
+  onRsvp,
 }: {
   kind: RsvpKind;
   label: string;
   names: string[];
   open: boolean;
+  mine: boolean;
+  busy: boolean;
   onOpen: (kind: RsvpKind) => void;
   onClose: () => void;
+  onRsvp?: (kind: RsvpKind) => void;
 }) {
+  const className = [
+    "rsvp",
+    `rsvp-${kind}`,
+    open ? "is-open" : "",
+    mine ? "is-mine" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <div
-      className={open ? `rsvp is-open rsvp-${kind}` : `rsvp rsvp-${kind}`}
+      className={className}
       onMouseEnter={() => onOpen(kind)}
       onMouseLeave={onClose}
     >
       <button
         type="button"
         className={kind === "going" ? "primary-button" : "secondary-button"}
+        disabled={busy}
         onClick={() => {
-          if (canHover()) {
-            return;
-          }
-          if (open) {
-            onClose();
-          } else {
+          onRsvp?.(kind);
+          if (!canHover()) {
             onOpen(kind);
           }
         }}
@@ -66,14 +81,14 @@ function RsvpMenu({
   );
 }
 
-export function EventCard({ event }: EventCardProps) {
+export function EventCard({ event, onRsvp, rsvpBusy = false }: EventCardProps) {
   const [open, setOpen] = useState<RsvpKind | null>(null);
   const cardRef = useRef<HTMLElement>(null);
   const [from, to] = coverForEvent(event.id);
 
   useEffect(() => {
-    function onPointerDown(event: PointerEvent) {
-      if (!cardRef.current?.contains(event.target as Node)) {
+    function onPointerDown(pointerEvent: PointerEvent) {
+      if (!cardRef.current?.contains(pointerEvent.target as Node)) {
         setOpen(null);
       }
     }
@@ -104,16 +119,22 @@ export function EventCard({ event }: EventCardProps) {
             label="Going"
             names={event.goingPeople}
             open={open === "going"}
+            mine={event.goingPeople.includes(CURRENT_USER_NAME)}
+            busy={rsvpBusy}
             onOpen={setOpen}
             onClose={() => setOpen(null)}
+            onRsvp={onRsvp}
           />
           <RsvpMenu
             kind="looking"
             label="Looking for someone"
             names={event.lookingPeople}
             open={open === "looking"}
+            mine={event.lookingPeople.includes(CURRENT_USER_NAME)}
+            busy={rsvpBusy}
             onOpen={setOpen}
             onClose={() => setOpen(null)}
+            onRsvp={onRsvp}
           />
         </div>
       </div>
