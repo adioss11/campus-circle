@@ -1,3 +1,4 @@
+// Old mock profile. The live page now uses GET /profile.
 import { FAKE_EVENTS } from "./fakeEvents";
 import type { CampusEvent } from "../types/event";
 import type { CampusUser } from "../types/user";
