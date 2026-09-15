@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.event_payload import event_to_out
 from app.models.event import Event
 from app.schemas.event import EventCreate, EventOut
 
@@ -16,7 +17,8 @@ def list_events(db: Session = Depends(get_db)):
     Newest saved first (highest id first). That is a simple stand-in until
     we store real dates we can sort by.
     """
-    return db.query(Event).order_by(Event.id.desc()).all()
+    events = db.query(Event).order_by(Event.id.desc()).all()
+    return [event_to_out(event, db) for event in events]
 
 
 @router.post("", response_model=EventOut, status_code=201)
@@ -41,4 +43,12 @@ def create_event(payload: EventCreate, db: Session = Depends(get_db)):
     db.add(event)
     db.commit()
     db.refresh(event)
-    return event
+    return event_to_out(event, db)
+
+
+@router.get("/{event_id}", response_model=EventOut)
+def get_event(event_id: int, db: Session = Depends(get_db)):
+    event = db.query(Event).filter(Event.id == event_id).first()
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found")
+    return event_to_out(event, db)

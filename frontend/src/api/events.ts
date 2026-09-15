@@ -2,7 +2,7 @@ import type { CampusEvent } from "../types/event";
 import { API_BASE_URL } from "./config";
 
 /** JSON shape returned by the FastAPI events routes. */
-type ApiEvent = {
+export type ApiEvent = {
   id: number;
   title: string;
   day: string;
@@ -10,6 +10,8 @@ type ApiEvent = {
   time: string;
   location: string;
   description: string;
+  goingPeople: string[];
+  lookingPeople: string[];
 };
 
 export type EventCreatePayload = {
@@ -21,8 +23,7 @@ export type EventCreatePayload = {
   description: string;
 };
 
-function toCampusEvent(apiEvent: ApiEvent): CampusEvent {
-  // Backend id is a number; the React type uses string. RSVP lists come later.
+export function toCampusEvent(apiEvent: ApiEvent): CampusEvent {
   return {
     id: String(apiEvent.id),
     title: apiEvent.title,
@@ -31,8 +32,8 @@ function toCampusEvent(apiEvent: ApiEvent): CampusEvent {
     time: apiEvent.time,
     location: apiEvent.location,
     description: apiEvent.description,
-    goingPeople: [],
-    lookingPeople: [],
+    goingPeople: apiEvent.goingPeople ?? [],
+    lookingPeople: apiEvent.lookingPeople ?? [],
   };
 }
 

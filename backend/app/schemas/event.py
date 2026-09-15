@@ -13,7 +13,7 @@ class EventCreate(BaseModel):
 
 
 class EventOut(BaseModel):
-    """JSON we send back after creating (or later listing) an event."""
+    """JSON we send back for one event, including RSVP name lists."""
 
     id: int
     title: str
@@ -22,6 +22,5 @@ class EventOut(BaseModel):
     time: str
     location: str
     description: str
-
-    # Lets FastAPI build this from a SQLAlchemy Event row automatically.
-    model_config = {"from_attributes": True}
+    goingPeople: list[str] = Field(default_factory=list)
+    lookingPeople: list[str] = Field(default_factory=list)
