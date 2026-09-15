@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CURRENT_USER_NAME } from "../api/currentUser";
 import type { CampusEvent } from "../types/event";
-import { coverForEvent } from "../data/fakeEvents";
+import { coverForEvent } from "../data/eventCover";
 
 type EventCardProps = {
   event: CampusEvent;

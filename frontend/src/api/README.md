@@ -6,5 +6,6 @@ Functions that call the FastAPI backend (`fetch`).
 - `currentUser.ts` — temporary name until real login (`Alex Kim`)
 - `events.ts` — `getEvents()`, `createEvent()`
 - `rsvps.ts` — `toggleRsvp()`
+- `profile.ts` — `getProfile()`
 
 Pages should call these helpers instead of writing `fetch` inline.

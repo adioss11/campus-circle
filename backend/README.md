@@ -33,7 +33,11 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 - `POST /events/{id}/rsvp` toggles or switches that RSVP
 - Event JSON includes `goingPeople` and `lookingPeople` name lists
 
-Profile from RSVPs comes next.
+### Step G — profile from RSVPs (priority 5)
+- `GET /profile` — demo user plus Going / Looking event lists from the `rsvps` table
+- Profile page loads that JSON instead of mock `FAKE_ME` lists
+
+Real login / auth comes later.
 
 
 ## One-time local database setup
@@ -66,7 +70,7 @@ Then open:
 
 - http://localhost:8000/ — hello message
 - http://localhost:8000/health — should include `"database": "ok"`
-- http://localhost:8000/docs — interactive API docs (try **GET /events**, **POST /events**, and **POST /events/{id}/rsvp**)
+- http://localhost:8000/docs — interactive API docs (events, RSVP, and **GET /profile**)
 
 List all saved events:
 
@@ -95,6 +99,12 @@ Toggle the demo user (Alex Kim) to Going on event 1 (use a real id from GET /eve
 curl -s -X POST http://localhost:8000/events/1/rsvp \
   -H "Content-Type: application/json" \
   -d '{"status":"going"}'
+```
+
+Load the demo profile (events split by RSVP status):
+
+```bash
+curl -s http://localhost:8000/profile
 ```
 
 Stop the server with `Ctrl+C`. Leave the virtual environment with `deactivate`.

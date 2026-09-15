@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, SessionLocal, check_database_connection, engine
 from app.demo_user import ensure_demo_user
-from app.routers import events, rsvps
+from app.routers import events, profile, rsvps
 
 # Import models so Base.metadata knows which tables to create.
 from app.models import event as event_model  # noqa: F401
@@ -39,6 +39,7 @@ app.add_middleware(
 
 app.include_router(events.router)
 app.include_router(rsvps.router)
+app.include_router(profile.router)
 
 
 @app.get("/")
