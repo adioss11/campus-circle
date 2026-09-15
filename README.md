@@ -10,7 +10,7 @@ Campus events already exist, but they are often only posted on university social
 | --- | --- |
 | Welcome, login, and signup screens | Done (mock auth — any credentials work) |
 | Events feed, post-event form, RSVP UI | Done (events load/save via API) |
-| Profile page | Done (mock data) |
+| Profile page | Done (from RSVPs via `GET /profile`) |
 | FastAPI hello + health routes | Done |
 | PostgreSQL connection via `.env` | Done |
 | Create event API (`POST /events`) | Done |
@@ -96,11 +96,11 @@ campus-circle/
 ├── docs/screenshots/         # README screenshots
 ├── frontend/                 # React + TypeScript (Vite)
 │   └── src/
-│       ├── api/              # backend calls (`events.ts`)
+│       ├── api/              # backend calls
 │       ├── components/       # reusable UI
-│       ├── data/             # mock events and profile data
+│       ├── data/             # form options and card colors
 │       ├── pages/            # Welcome, Events, Profile
-│       └── types/            # TypeScript shapes (Event, User, …)
+│       └── types/            # TypeScript shapes (Event, …)
 └── backend/                  # FastAPI + PostgreSQL
     ├── .env.example
     ├── requirements.txt

@@ -22,7 +22,7 @@ I am a beginner building my first full-stack project. Teach me; do not assume I 
 - React + Vite + TypeScript with `BrowserRouter`.
 - Pages in `frontend/src/pages/`; reusable UI in `frontend/src/components/`.
 - Types in `frontend/src/types/`; API calls in `frontend/src/api/` (no scattered `fetch` in UI).
-- Keep using mock data in `frontend/src/data/` until we intentionally wire a feature.
+- Keep `frontend/src/data/` for UI helpers (form options, card colors), not leftover mock events/profile once a feature is wired.
 - When wiring the API, change only what that step needs — do not redesign the UI.
 
 ## Backend
