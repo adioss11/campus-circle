@@ -11,9 +11,9 @@ I am a beginner building my first full-stack project. Teach me; do not assume I 
 - After each change, explain what changed and how to test it.
 - When there is more than one reasonable approach, give options and wait for my choice.
 - Do not add libraries unless necessary; explain why and ask first when possible.
-- Do not add authentication until I ask. Core events/RSVP/profile logic comes first.
+- Auth has started. Do not jump ahead into extra auth features (OAuth, email verification, password reset) unless I ask.
 - After every major step we finish, update the root `README.md` status so the repo matches reality.
-- Explain important building blocks in plain language: where data lives (Postgres vs React state vs `.json` files), how to start/stop services, what SQLAlchemy/JSON/HTTP status codes are, and what is backend-only vs visible in the UI.
+- Explain important building blocks in plain language every time they show up, including ones I have already asked about: where data lives, how to start/stop/inspect services, JSON vs database tables, HTTP methods and status codes, SQLAlchemy, virtualenv, ports, CORS, foreign keys, and JOIN. I need to be able to explain these in an interview.
 - Say clearly what is backend-only vs visible in the frontend. Do not assume I know they are separate.
 - When an important concept comes up (React, FastAPI, or PostgreSQL), offer a small hands-on exercise I can type myself — a few lines, not a whole feature — so I feel how it actually works. Wait for me to try it before doing that part for me, unless I ask you to do it.
 

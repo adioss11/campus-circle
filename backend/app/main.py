@@ -5,11 +5,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, SessionLocal, check_database_connection, engine
 from app.demo_user import ensure_demo_user
-from app.routers import events, profile, rsvps
+from app.routers import auth, events, profile, rsvps
+from app.schema_updates import ensure_auth_columns
 
 # Import models so Base.metadata knows which tables to create.
 from app.models import event as event_model  # noqa: F401
 from app.models import rsvp as rsvp_model  # noqa: F401
+from app.models import session as session_model  # noqa: F401
 from app.models import user as user_model  # noqa: F401
 
 
@@ -17,6 +19,7 @@ from app.models import user as user_model  # noqa: F401
 async def lifespan(_app: FastAPI):
     """Runs once when the server starts, then again when it shuts down."""
     Base.metadata.create_all(bind=engine)
+    ensure_auth_columns(engine)
     db = SessionLocal()
     try:
         ensure_demo_user(db)
@@ -37,6 +40,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth.router)
 app.include_router(events.router)
 app.include_router(rsvps.router)
 app.include_router(profile.router)

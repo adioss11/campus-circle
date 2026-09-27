@@ -37,7 +37,13 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 - `GET /profile` — demo user plus Going / Looking event lists from the `rsvps` table
 - Profile page loads that JSON instead of mock `FAKE_ME` lists
 
-Real login / auth comes later.
+### Step H — real login (priority 6, first slice)
+- `users.email` and `users.password_hash` (hash, not the password)
+- `sessions` table holds a random login token
+- `POST /signup`, `POST /login`, `POST /logout`, `GET /me`
+- React stores the token in `localStorage` and sends `Authorization: Bearer …`
+
+RSVPs and profile still use demo user Alex Kim. Wiring them to the token is next.
 
 
 ## One-time local database setup
@@ -70,7 +76,7 @@ Then open:
 
 - http://localhost:8000/ — hello message
 - http://localhost:8000/health — should include `"database": "ok"`
-- http://localhost:8000/docs — interactive API docs (events, RSVP, and **GET /profile**)
+- http://localhost:8000/docs — interactive API docs (auth, events, RSVP, profile)
 
 List all saved events:
 

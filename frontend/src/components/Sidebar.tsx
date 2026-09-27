@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { logout } from "../api/auth";
 import { LogoutConfirmModal } from "./LogoutConfirmModal";
 
 type SidebarProps = {
@@ -77,7 +78,9 @@ export function Sidebar({ onPost }: SidebarProps) {
       {confirmLogout ? (
         <LogoutConfirmModal
           onCancel={() => setConfirmLogout(false)}
-          onConfirm={() => navigate("/")}
+          onConfirm={() => {
+            void logout().finally(() => navigate("/"));
+          }}
         />
       ) : null}
     </>
