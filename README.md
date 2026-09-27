@@ -8,7 +8,7 @@ Campus events already exist, but they are often only posted on university social
 
 | Area | Status |
 | --- | --- |
-| Welcome, login, and signup screens | Done (mock auth — any credentials work) |
+| Welcome, login, and signup screens | Done (real email + password) |
 | Events feed, post-event form, RSVP UI | Done (events load/save via API) |
 | Profile page | Done (from RSVPs via `GET /profile`) |
 | FastAPI hello + health routes | Done |
@@ -18,9 +18,10 @@ Campus events already exist, but they are often only posted on university social
 | Wire frontend events to API | Done |
 | Save RSVP changes | Done |
 | Profile from RSVPs | Done |
-| Real login / auth | Later |
+| Real login / auth | Done (signup, login, logout token) |
+| RSVPs follow the logged-in user | Next |
 
-**Frontend** Events load/save via the API. RSVP clicks persist for demo user Alex Kim. The profile page lists Going / Looking from those RSVPs. Auth is still mock.
+**Frontend** signup and login check a real account. The password is stored as a hash. RSVP clicks and the profile page still use demo user Alex Kim until the next step.
 
 ## Screenshots
 
@@ -47,10 +48,11 @@ Campus events already exist, but they are often only posted on university social
 - Profile page lists Going / Looking from PostgreSQL RSVPs
 - Logout confirmation dialog
 - Backend `GET /` and `GET /health` (health also checks the database)
+- Backend `POST /signup`, `POST /login`, `POST /logout`, `GET /me`
 - Backend `POST /events` / `GET /events` / `POST /events/{id}/rsvp` / `GET /profile`
 - CORS enabled so the React app (port 5174) can call the API (port 8000)
 
-Not yet: real accounts, photo upload, clubs, chat, maps, or admin tools.
+Not yet: RSVPs and profile tied to the logged-in user (they still use Alex Kim), photo upload, clubs, chat, maps, or admin tools.
 
 ## Tech stack
 

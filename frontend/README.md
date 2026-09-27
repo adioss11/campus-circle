@@ -1,32 +1,27 @@
-# React + TypeScript + Vite
+# frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This is the website students see in the browser. It is React + TypeScript, started by Vite.
 
-Currently, two official plugins are available:
+Vite is the tool that serves the website while you are coding. Default address: http://localhost:5174
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run it
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+cd frontend
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+The API must also be running on port 8000, or login, events, and profile cannot load.
+
+## What is inside `src/`
+
+| Folder | Job |
+| --- | --- |
+| `pages/` | One whole screen (home, events, profile) |
+| `components/` | Pieces reused on those screens (card, form, sidebar) |
+| `api/` | Functions that talk to FastAPI |
+| `types/` | The shape of an event in TypeScript |
+| `data/` | Form choices and card colors. Not the database. |
+
+Login and signup call the API. A wrong password does not enter the app. RSVP clicks and the profile lists still use the demo person Alex Kim until we connect them to the logged-in account.

@@ -203,6 +203,13 @@ h1 span {
   line-height: 1.5;
 }
 
+.auth-form .form-error {
+  margin: 0;
+  color: #9b1c3a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .fields {
   display: flex;
   flex-direction: column;

@@ -4,8 +4,8 @@ This file explains why the monorepo folders exist.
 
 CampusCircle is two programs that talk to each other over HTTP:
 
-- **frontend** — React + TypeScript. Students see this in the browser. **UI is complete** as a prototype with mock data.
-- **backend** — FastAPI + Python. Will store users, events, and RSVPs. Structure is ready; implementation is next.
+- **frontend** — React + TypeScript. Students see this in the browser on port 5174.
+- **backend** — FastAPI + Python on port 8000. It stores users, events, RSVPs, and login tokens in PostgreSQL.
 
 They live in **one git repo** (a monorepo) so you can work on both sides together, but they stay in separate folders because they use different languages and tools.
 
@@ -22,7 +22,7 @@ During development you will usually run **two servers**:
 1. Vite on port 5174 (the React app)
 2. FastAPI on port 8000 (the API)
 
-The browser talks to FastAPI. FastAPI talks to PostgreSQL. PostgreSQL is a database **server**, not a folder of files you edit. You will connect to it later from `backend/`.
+The browser talks to FastAPI. FastAPI talks to PostgreSQL. PostgreSQL is a database **server**, not a folder of files you edit. The connection string lives in `backend/.env`.
 
 ---
 
@@ -106,15 +106,14 @@ From the README:
 - **Admin-created events** (title, time, location, description, image) → `routers/` + `models/` + `schemas/` for events
 - **RSVP: Going / Looking for someone** → `routers/` + a table that links a user to an event with a status
 
-We are **not** creating those Python files yet. Empty folders are enough for this step.
-
-Later you will add a few files that are not folders:
+Those Python files exist now:
 
 - `backend/app/main.py` — creates the FastAPI app and attaches routers
 - `backend/app/database.py` — connects to PostgreSQL
 - `backend/requirements.txt` — Python packages (FastAPI, database driver, …)
-
-Those belong in a later step, when you start the API.
+- `backend/app/models/` — tables
+- `backend/app/routers/` — URLs
+- `backend/app/schemas/` — JSON shapes
 
 ---
 
@@ -134,7 +133,7 @@ Browser
     ← page renders EventCard in frontend/src/components/
 ```
 
-You do not need to build this pipeline now. Keep the picture in mind so each new file has a clear job.
+This pipeline is what the Events page does today. Login uses the same idea with `/signup` and `/login`.
 
 ---
 
@@ -154,6 +153,5 @@ If a folder is not on this map, you probably do not need it yet.
 
 ## What to do next
 
-1. Read the short README in each new folder.
-2. Confirm you can explain, in your own words, **pages vs components** and **routers vs models vs schemas**.
-3. When you are ready, the next step is a tiny FastAPI `main.py` that returns a hello-world JSON response — still no events, users, or database.
+1. Be able to say, in your own words, **pages vs components** and **routers vs models vs schemas**.
+2. Next product step, when you choose it: make RSVPs and the profile use the logged-in person instead of Alex Kim.
