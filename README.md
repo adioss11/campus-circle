@@ -19,9 +19,9 @@ Campus events already exist, but they are often only posted on university social
 | Save RSVP changes | Done |
 | Profile from RSVPs | Done |
 | Real login / auth | Done (signup, login, logout token) |
-| RSVPs follow the logged-in user | Next |
+| RSVPs follow the logged-in user | Done |
 
-**Frontend** signup and login check a real account. The password is stored as a hash. RSVP clicks and the profile page still use demo user Alex Kim until the next step.
+**Frontend** signup and login check a real account. RSVP clicks and the profile page use that same account. The password is stored as a hash.
 
 ## Screenshots
 
@@ -43,16 +43,16 @@ Campus events already exist, but they are often only posted on university social
 ## What’s working today
 
 - Browse campus events from the API (PostgreSQL), not mock feed data
-- RSVP: **Going** and **Looking for someone** (click saves for demo user Alex Kim; hover shows names)
+- RSVP: **Going** and **Looking for someone** (saved for the logged-in person)
 - Post-event form saves through the API (survives refresh)
-- Profile page lists Going / Looking from PostgreSQL RSVPs
+- Profile page lists the logged-in person's Going / Looking RSVPs
 - Logout confirmation dialog
 - Backend `GET /` and `GET /health` (health also checks the database)
 - Backend `POST /signup`, `POST /login`, `POST /logout`, `GET /me`
 - Backend `POST /events` / `GET /events` / `POST /events/{id}/rsvp` / `GET /profile`
 - CORS enabled so the React app (port 5174) can call the API (port 8000)
 
-Not yet: RSVPs and profile tied to the logged-in user (they still use Alex Kim), photo upload, clubs, chat, maps, or admin tools.
+Not yet: photo upload, clubs, chat, maps, or admin tools.
 
 ## Tech stack
 

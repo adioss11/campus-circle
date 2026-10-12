@@ -24,4 +24,4 @@ The API must also be running on port 8000, or login, events, and profile cannot 
 | `types/` | The shape of an event in TypeScript |
 | `data/` | Form choices and card colors. Not the database. |
 
-Login and signup call the API. A wrong password does not enter the app. RSVP clicks and the profile lists still use the demo person Alex Kim until we connect them to the logged-in account.
+Login and signup call the API. RSVP clicks and the profile lists use the person who is logged in.

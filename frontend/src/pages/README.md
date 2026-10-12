@@ -6,4 +6,4 @@ Right now:
 
 - `HomePage.tsx` — `/` welcome, login, and signup (real accounts)
 - `EventsPage.tsx` — `/events` feed from `GET /events`
-- `ProfilePage.tsx` — `/profile` from `GET /profile` (still the demo user Alex Kim)
+- `ProfilePage.tsx` — `/profile` from `GET /profile` for the logged-in person

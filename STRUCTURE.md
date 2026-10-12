@@ -154,4 +154,4 @@ If a folder is not on this map, you probably do not need it yet.
 ## What to do next
 
 1. Be able to say, in your own words, **pages vs components** and **routers vs models vs schemas**.
-2. Next product step, when you choose it: make RSVPs and the profile use the logged-in person instead of Alex Kim.
+2. RSVPs and the profile already use the logged-in person. Next product ideas, when you choose one: photo upload, or keeping the app small and practicing explanations.

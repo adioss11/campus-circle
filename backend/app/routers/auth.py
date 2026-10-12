@@ -3,6 +3,7 @@ import secrets
 from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 
+from app.current_user import get_current_user
 from app.database import get_db
 from app.models.session import LoginSession
 from app.models.user import User
@@ -21,23 +22,6 @@ def _start_session(db: Session, user: User) -> AuthOut:
     db.add(LoginSession(token=token, user_id=user.id))
     db.commit()
     return AuthOut(id=user.id, name=user.name, email=user.email or "", token=token)
-
-
-def get_current_user(
-    authorization: str | None = Header(default=None),
-    db: Session = Depends(get_db),
-) -> User:
-    """Read Authorization: Bearer <token> and return that user."""
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Log in required")
-    token = authorization.removeprefix("Bearer ").strip()
-    row = db.query(LoginSession).filter(LoginSession.token == token).first()
-    if not row:
-        raise HTTPException(status_code=401, detail="Log in required")
-    user = db.query(User).filter(User.id == row.user_id).first()
-    if not user:
-        raise HTTPException(status_code=401, detail="Log in required")
-    return user
 
 
 @router.post("/signup", response_model=AuthOut, status_code=201)

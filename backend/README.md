@@ -43,7 +43,10 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 - `POST /signup`, `POST /login`, `POST /logout`, `GET /me`
 - React stores the token in `localStorage` and sends `Authorization: Bearer …`
 
-RSVPs and profile still use demo user Alex Kim. Wiring them to the token is next.
+### Step I — RSVPs belong to the logged-in person
+- `POST /events/{id}/rsvp` and `GET /profile` read the token
+- No token means HTTP 401
+- The website sends the token on those calls
 
 
 ## One-time local database setup
@@ -99,11 +102,12 @@ curl -s -X POST http://localhost:8000/events \
   }'
 ```
 
-Toggle the demo user (Alex Kim) to Going on event 1 (use a real id from GET /events):
+Log in, then mark Going. Replace TOKEN with the token from login:
 
 ```bash
 curl -s -X POST http://localhost:8000/events/1/rsvp \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TOKEN" \
   -d '{"status":"going"}'
 ```
 
