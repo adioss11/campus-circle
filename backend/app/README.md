@@ -2,7 +2,7 @@
 
 The FastAPI application code lives here.
 
-- `main.py` — creates the FastAPI app, creates tables on startup, seeds demo user, mounts routers
+- `main.py` — creates the FastAPI app, creates tables on startup, mounts routers
 - `database.py` — PostgreSQL connection (SQLAlchemy engine + sessions)
 - `passwords.py` — turns a password into a hash, and checks a password against that hash
 - `current_user.py` — reads the login token and finds that person

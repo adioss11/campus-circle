@@ -68,7 +68,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5174](http://localhost:5174). Log in with any email and password (credentials are not checked yet).
+Open [http://localhost:5174](http://localhost:5174). Sign up, or log in with an email and password that are already saved. The API checks the password. RSVP and profile calls send the login token.
 
 Keep the backend running on port 8000 at the same time, or the Events page cannot load/save.
 
