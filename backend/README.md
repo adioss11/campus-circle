@@ -28,13 +28,14 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 - Events page loads and posts through those helpers (refresh keeps events)
 
 ### Step F — save RSVPs (priority 4)
-- `users` table with a demo row: Alex Kim (not real login)
+- `users` table. This step added one demo person, Alex Kim, so an RSVP had someone to attach to. Step I stopped creating that row.
 - `rsvps` table linking a user to an event with `going` or `looking`
-- `POST /events/{id}/rsvp` toggles or switches that RSVP
+- `POST /events/{id}/rsvp` toggles or switches that RSVP (Step I: only for the logged-in person)
 - Event JSON includes `goingPeople` and `lookingPeople` name lists
 
 ### Step G — profile from RSVPs (priority 5)
-- `GET /profile` — demo user plus Going / Looking event lists from the `rsvps` table
+- `GET /profile` — one person plus their Going / Looking lists from the `rsvps` table
+- This step returned Alex Kim. Step I returns whoever is logged in.
 - Profile page loads that JSON instead of mock `FAKE_ME` lists
 
 ### Step H — real login (priority 6, first slice)
@@ -43,7 +44,10 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 - `POST /signup`, `POST /login`, `POST /logout`, `GET /me`
 - React stores the token in `localStorage` and sends `Authorization: Bearer …`
 
-RSVPs and profile still use demo user Alex Kim. Wiring them to the token is next.
+### Step I — RSVPs belong to the logged-in person
+- `POST /events/{id}/rsvp` and `GET /profile` read the token
+- No token means HTTP 401
+- The website sends the token on those calls
 
 
 ## One-time local database setup
@@ -99,18 +103,20 @@ curl -s -X POST http://localhost:8000/events \
   }'
 ```
 
-Toggle the demo user (Alex Kim) to Going on event 1 (use a real id from GET /events):
+Log in, then mark Going. Replace TOKEN with the token from login:
 
 ```bash
 curl -s -X POST http://localhost:8000/events/1/rsvp \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TOKEN" \
   -d '{"status":"going"}'
 ```
 
-Load the demo profile (events split by RSVP status):
+Load that person's profile. Same TOKEN. No token returns 401.
 
 ```bash
-curl -s http://localhost:8000/profile
+curl -s http://localhost:8000/profile \
+  -H "Authorization: Bearer TOKEN"
 ```
 
 Stop the server with `Ctrl+C`. Leave the virtual environment with `deactivate`.
