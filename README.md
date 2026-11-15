@@ -76,8 +76,12 @@ Keep the backend running on port 8000 at the same time, or the Events page canno
 
 See [backend/README.md](backend/README.md) for PostgreSQL setup and `.env`.
 
+`.venv` is a local folder of installed Python packages. Git does not store it. `.cursor/install.sh` creates `backend/.venv` when a Cloud Agent environment is built, so `source .venv/bin/activate` works on a machine that booted from that build. If activate says "No such file or directory", this machine does not have the folder yet. Create it once:
+
 ```bash
 cd backend
+sudo apt-get update
+sudo apt-get install -y python3-venv
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt

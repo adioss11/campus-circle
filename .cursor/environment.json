@@ -1,6 +1,6 @@
 {
   "name": "CampusCircle",
-  "install": "cd frontend && npm ci",
+  "install": "bash .cursor/install.sh",
   "terminals": [
     {
       "name": "frontend-dev",

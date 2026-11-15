@@ -64,8 +64,12 @@ cp .env.example .env
 
 ## Run the API
 
+`.venv` holds the installed Python packages for this API. It is listed in `.gitignore`, so a fresh machine does not have `backend/.venv/bin/activate` until something creates it. Cloud Agent setup runs `.cursor/install.sh`, which creates that folder. If the activate file is missing, create it once:
+
 ```bash
 cd backend
+sudo apt-get update
+sudo apt-get install -y python3-venv
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
