@@ -13,6 +13,7 @@ They live in **one git repo** (a monorepo) so you can work on both sides togethe
 campus-circle/
 ├── README.md                 # what the product is
 ├── STRUCTURE.md              # this file: why folders exist
+├── .cursor/install.sh        # creates node_modules and backend/.venv on a new Cloud machine
 ├── frontend/                 # React + TypeScript (already started)
 └── backend/                  # FastAPI — structure ready, implementation next
 ```
@@ -111,6 +112,7 @@ Those Python files exist now:
 - `backend/app/main.py` — creates the FastAPI app and attaches routers
 - `backend/app/database.py` — connects to PostgreSQL
 - `backend/requirements.txt` — Python packages (FastAPI, database driver, …)
+- `backend/.venv/` — those packages, installed on this machine. Not in git. `.cursor/install.sh` creates it.
 - `backend/app/models/` — tables
 - `backend/app/routers/` — URLs
 - `backend/app/schemas/` — JSON shapes
