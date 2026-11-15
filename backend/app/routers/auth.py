@@ -13,10 +13,6 @@ from app.schemas.auth import AuthOut, LoginIn, SignupIn, UserOut
 router = APIRouter(tags=["auth"])
 
 
-def _normalize_email(email: str) -> str:
-    return email.strip().lower()
-
-
 def _start_session(db: Session, user: User) -> AuthOut:
     token = secrets.token_urlsafe(32)
     db.add(LoginSession(token=token, user_id=user.id))
@@ -26,15 +22,12 @@ def _start_session(db: Session, user: User) -> AuthOut:
 
 @router.post("/signup", response_model=AuthOut, status_code=201)
 def signup(payload: SignupIn, db: Session = Depends(get_db)):
-    email = _normalize_email(payload.email)
-    if "@" not in email or email.startswith("@") or email.endswith("@"):
-        raise HTTPException(status_code=422, detail="Enter a valid email")
-    existing = db.query(User).filter(User.email == email).first()
+    existing = db.query(User).filter(User.email == payload.email).first()
     if existing:
         raise HTTPException(status_code=409, detail="An account with that email already exists")
     user = User(
-        name=payload.name.strip(),
-        email=email,
+        name=payload.name,
+        email=payload.email,
         password_hash=hash_password(payload.password),
     )
     db.add(user)
@@ -45,8 +38,7 @@ def signup(payload: SignupIn, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=AuthOut)
 def login(payload: LoginIn, db: Session = Depends(get_db)):
-    email = _normalize_email(payload.email)
-    user = db.query(User).filter(User.email == email).first()
+    user = db.query(User).filter(User.email == payload.email).first()
     # Same error whether the email is missing or the password is wrong.
     # That way a stranger cannot use the API to discover which emails exist.
     if (

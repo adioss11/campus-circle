@@ -124,9 +124,15 @@ export function EventsPage() {
                         item.id === updated.id ? updated : item,
                       ),
                     );
-                  } catch {
+                  } catch (reason) {
+                    const message =
+                      reason instanceof Error
+                        ? reason.message
+                        : "Could not save RSVP.";
                     setRsvpError(
-                      "Could not save RSVP. Is the API running on port 8000?",
+                      message === "Failed to fetch"
+                        ? "Could not reach the API. Is it running on port 8000?"
+                        : message,
                     );
                   } finally {
                     setRsvpBusyId(null);
