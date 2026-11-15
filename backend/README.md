@@ -28,14 +28,14 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 - Events page loads and posts through those helpers (refresh keeps events)
 
 ### Step F — save RSVPs (priority 4)
-- `users` table. This step added one demo person, Alex Kim, so an RSVP had someone to attach to. Step I stopped creating that row.
+- `users` table. An early version seeded one demo person so an RSVP had someone to attach to. That seed is gone.
 - `rsvps` table linking a user to an event with `going` or `looking`
 - `POST /events/{id}/rsvp` toggles or switches that RSVP (Step I: only for the logged-in person)
 - Event JSON includes `goingPeople` and `lookingPeople` name lists
 
 ### Step G — profile from RSVPs (priority 5)
 - `GET /profile` — one person plus their Going / Looking lists from the `rsvps` table
-- This step returned Alex Kim. Step I returns whoever is logged in.
+- An early version returned the demo person. It now returns whoever is logged in.
 - Profile page loads that JSON instead of mock `FAKE_ME` lists
 
 ### Step H — real login (priority 6, first slice)
@@ -140,6 +140,13 @@ curl -s http://localhost:8000/profile \
 
 Stop the server with `Ctrl+C`. Leave the virtual environment with `deactivate`.
 
+API tests use a second database so they do not touch `campuscircle`:
+
+```bash
+sudo -u postgres psql -c "CREATE DATABASE campuscircle_test OWNER campuscircle;"
+pytest
+```
+
 ## Packages used so far (and why)
 
 | Package | Why |
@@ -149,3 +156,5 @@ Stop the server with `Ctrl+C`. Leave the virtual environment with `deactivate`.
 | `sqlalchemy` | Talk to PostgreSQL from Python |
 | `psycopg2-binary` | PostgreSQL driver SQLAlchemy uses |
 | `python-dotenv` | Load `DATABASE_URL` from `.env` |
+| `pytest` | Run the API tests |
+| `httpx` | Lets the tests call the FastAPI app without a running server |

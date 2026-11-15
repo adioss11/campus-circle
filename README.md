@@ -22,7 +22,7 @@ Campus events already exist, but they are often only posted on university social
 | RSVPs follow the logged-in user | Done |
 | Events list requires login | Done |
 
-**Frontend** signup and login check a real account. The events list, RSVP clicks, and the profile page use that same account. The password is stored as a hash.
+Signup and login check a real account. The password is stored as a salted PBKDF2 hash, not as the text you type. The events list, creating an event, RSVP clicks, and the profile page send `Authorization: Bearer` plus the login token.
 
 ## Screenshots
 
@@ -50,7 +50,7 @@ Campus events already exist, but they are often only posted on university social
 - Logout confirmation dialog
 - Backend `GET /` and `GET /health` (health also checks the database)
 - Backend `POST /signup`, `POST /login`, `POST /logout`, `GET /me`
-- Backend `POST /events` / `GET /events` / `POST /events/{id}/rsvp` / `GET /profile`
+- Backend `POST /events` / `GET /events` / `GET /events/{id}` / `POST /events/{id}/rsvp` / `GET /profile` (each requires the login token)
 - CORS enabled so the React app (port 5174) can call the API (port 8000)
 
 Not yet: photo upload, clubs, chat, maps, or admin tools.
@@ -59,9 +59,38 @@ Not yet: photo upload, clubs, chat, maps, or admin tools.
 
 - **Frontend:** React + TypeScript (Vite)
 - **Backend:** FastAPI
-- **Database:** PostgreSQL (`events`, `users`, and `rsvps` tables created on API startup)
+- **Database:** PostgreSQL. Startup creates `users`, `sessions`, `events`, and `rsvps`. `sessions` stores the login token.
 
-## Run the frontend
+## Run it
+
+PostgreSQL first, then the API, then the website. The API will not start without the database.
+
+1. Install PostgreSQL, start it, and create the database. On Ubuntu the service command is often blocked, so start cluster 16 directly. Full notes are in [backend/README.md](backend/README.md).
+
+```bash
+sudo apt-get update
+sudo apt-get install -y postgresql
+sudo pg_ctlcluster 16 main start
+sudo -u postgres psql -c "CREATE USER campuscircle WITH PASSWORD 'campuscircle';"
+sudo -u postgres psql -c "CREATE DATABASE campuscircle OWNER campuscircle;"
+```
+
+2. Start the API. `.venv` and `.env` are local. Git does not store them. Copy the example env file once. It points at the database created above.
+
+```bash
+cd backend
+sudo apt-get install -y python3-venv
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+uvicorn app.main:app --reload
+```
+
+- http://localhost:8000/health — `"database": "ok"` means PostgreSQL answered
+- http://localhost:8000/docs — try the routes. Events, RSVP, and profile need the token from signup or login
+
+3. Start the website in a second terminal.
 
 ```bash
 cd frontend
@@ -69,30 +98,15 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5174](http://localhost:5174). Sign up, or log in with an email and password that are already saved. The API checks the password. RSVP and profile calls send the login token.
+Open [http://localhost:5174](http://localhost:5174). Sign up, or log in. The browser keeps the token and sends it on the events list, creating an event, RSVP, and profile.
 
-Keep the backend running on port 8000 at the same time, or the Events page cannot load/save.
-
-## Run the backend
-
-See [backend/README.md](backend/README.md) for PostgreSQL setup and `.env`.
-
-`.venv` is a local folder of installed Python packages. Git does not store it, and it does not store `backend/.env` either. `.cursor/install.sh` creates `backend/.venv`, copies `.env.example` to `.env`, installs PostgreSQL, and creates the `campuscircle` database. `.cursor/start.sh` starts PostgreSQL on each new boot. If activate is missing, or PostgreSQL says `unrecognized service`, this machine booted from an older setup. Create the pieces once:
+API tests, from `backend` with the virtualenv active:
 
 ```bash
-cd backend
-sudo apt-get update
-sudo apt-get install -y python3-venv
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env   # once
-uvicorn app.main:app --reload
+pytest
 ```
 
-- http://localhost:8000/ — hello JSON
-- http://localhost:8000/health — should show `"database": "ok"`
-- http://localhost:8000/docs — interactive API docs
+They use a separate database, `campuscircle_test`. Create it once the same way as `campuscircle` if it does not exist yet.
 
 ## Repository layout
 
