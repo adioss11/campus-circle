@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "./config";
+import { authHeaders } from "./session";
 import { type ApiEvent, toCampusEvent } from "./events";
 import type { CampusEvent } from "../types/event";
 
@@ -10,9 +11,12 @@ export async function toggleRsvp(
 ): Promise<CampusEvent> {
   const response = await fetch(`${API_BASE_URL}/events/${eventId}/rsvp`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({ status }),
   });
+  if (response.status === 401) {
+    throw new Error("Log in to save an RSVP.");
+  }
   if (!response.ok) {
     throw new Error(`Could not save RSVP (HTTP ${response.status})`);
   }

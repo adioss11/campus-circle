@@ -20,11 +20,13 @@ export function ProfilePage() {
           setProfile(data);
           setLoadError(null);
         }
-      } catch {
+      } catch (reason) {
         if (!cancelled) {
-          setLoadError(
-            "Could not load profile. Is the API running on port 8000?",
-          );
+          const message =
+            reason instanceof Error
+              ? reason.message
+              : "Could not load profile. Is the API running on port 8000?";
+          setLoadError(message);
         }
       } finally {
         if (!cancelled) {
@@ -59,8 +61,7 @@ export function ProfilePage() {
                   <p className="eyebrow">MY PROFILE</p>
                   <h1>{profile.name}</h1>
                   <p>
-                    Lists come from your RSVPs in PostgreSQL. Photo upload
-                    comes later with real accounts.
+                    These lists are your RSVPs, saved for this login.
                   </p>
                 </div>
               </header>

@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "./config";
+import { authHeaders } from "./session";
 import { type ApiEvent, toCampusEvent } from "./events";
 import type { CampusEvent } from "../types/event";
 
@@ -19,7 +20,12 @@ type ApiProfile = {
 };
 
 export async function getProfile(): Promise<CampusProfile> {
-  const response = await fetch(`${API_BASE_URL}/profile`);
+  const response = await fetch(`${API_BASE_URL}/profile`, {
+    headers: authHeaders(),
+  });
+  if (response.status === 401) {
+    throw new Error("Log in to see your profile.");
+  }
   if (!response.ok) {
     throw new Error(`Could not load profile (HTTP ${response.status})`);
   }

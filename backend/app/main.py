@@ -3,8 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.database import Base, SessionLocal, check_database_connection, engine
-from app.demo_user import ensure_demo_user
+from app.database import Base, check_database_connection, engine
 from app.routers import auth, events, profile, rsvps
 from app.schema_updates import ensure_auth_columns
 
@@ -20,11 +19,6 @@ async def lifespan(_app: FastAPI):
     """Runs once when the server starts, then again when it shuts down."""
     Base.metadata.create_all(bind=engine)
     ensure_auth_columns(engine)
-    db = SessionLocal()
-    try:
-        ensure_demo_user(db)
-    finally:
-        db.close()
     yield
 
 

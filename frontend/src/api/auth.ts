@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "./config";
-import { authHeaders, clearToken, saveToken } from "./session";
+import { authHeaders, clearToken, saveSession } from "./session";
 
 export type AuthResult = {
   id: number;
@@ -34,7 +34,7 @@ export async function signup(input: {
     throw new Error(await readError(response));
   }
   const data = (await response.json()) as AuthResult;
-  saveToken(data.token);
+  saveSession(data.token, data.name);
 }
 
 export async function login(input: {
@@ -50,7 +50,7 @@ export async function login(input: {
     throw new Error(await readError(response));
   }
   const data = (await response.json()) as AuthResult;
-  saveToken(data.token);
+  saveSession(data.token, data.name);
 }
 
 export async function logout(): Promise<void> {

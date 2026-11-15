@@ -1,27 +1,40 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.current_user import get_current_user
 from app.database import get_db
-from app.demo_user import ensure_demo_user, initials_from_name
 from app.event_payload import event_to_out
 from app.models.event import Event
 from app.models.rsvp import Rsvp
+from app.models.user import User
 from app.schemas.profile import ProfileOut
+
+
+def initials_from_name(name: str) -> str:
+    """Turn 'Alex Kim' into 'AK'. Computed for the avatar. Not a database column."""
+    parts = [part for part in name.split() if part]
+    if not parts:
+        return "?"
+    if len(parts) == 1:
+        return parts[0][:2].upper()
+    return (parts[0][0] + parts[-1][0]).upper()
 
 router = APIRouter(tags=["profile"])
 
 
 @router.get("/profile", response_model=ProfileOut)
-def get_profile(db: Session = Depends(get_db)):
+def get_profile(
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
     """
-    Return the demo user plus the events they marked Going / Looking.
+    Return the logged-in person plus the events they marked Going / Looking.
 
     Flow:
-    1. Find Alex Kim in users.
-    2. Find that user's rows in rsvps.
+    1. Read the token and find that person in users.
+    2. Find that person's rows in rsvps.
     3. Load those events and split them by status.
     """
-    user = ensure_demo_user(db)
     rsvps = db.query(Rsvp).filter(Rsvp.user_id == user.id).all()
     going_ids = [rsvp.event_id for rsvp in rsvps if rsvp.status == "going"]
     looking_ids = [rsvp.event_id for rsvp in rsvps if rsvp.status == "looking"]

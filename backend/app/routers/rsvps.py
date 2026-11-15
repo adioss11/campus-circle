@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.current_user import get_current_user
 from app.database import get_db
-from app.demo_user import ensure_demo_user
 from app.event_payload import event_to_out
 from app.models.event import Event
 from app.models.rsvp import Rsvp
+from app.models.user import User
 from app.schemas.event import EventOut
 from app.schemas.rsvp import RsvpUpdate
 
@@ -13,9 +14,14 @@ router = APIRouter(prefix="/events", tags=["rsvps"])
 
 
 @router.post("/{event_id}/rsvp", response_model=EventOut)
-def toggle_rsvp(event_id: int, payload: RsvpUpdate, db: Session = Depends(get_db)):
+def toggle_rsvp(
+    event_id: int,
+    payload: RsvpUpdate,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
     """
-    Save, switch, or remove the demo user's RSVP on one event.
+    Save, switch, or remove the logged-in person's RSVP on one event.
 
     - No RSVP + click Going → save going
     - Going + click Going → delete the row (toggle off)
@@ -26,7 +32,6 @@ def toggle_rsvp(event_id: int, payload: RsvpUpdate, db: Session = Depends(get_db
     if not event:
         raise HTTPException(status_code=404, detail="Event not found")
 
-    user = ensure_demo_user(db)
     existing = (
         db.query(Rsvp)
         .filter(Rsvp.event_id == event_id, Rsvp.user_id == user.id)

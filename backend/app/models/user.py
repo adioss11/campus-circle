@@ -9,7 +9,6 @@ class User(Base):
 
     email + password_hash are for login.
     password_hash is not the password. See passwords.py.
-    The demo row (Alex Kim) can have both empty until real accounts RSVP.
     """
 
     __tablename__ = "users"

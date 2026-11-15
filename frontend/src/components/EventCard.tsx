@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CURRENT_USER_NAME } from "../api/currentUser";
+import { readUserName } from "../api/session";
 import type { CampusEvent } from "../types/event";
 import { coverForEvent } from "../data/eventCover";
 
@@ -119,7 +119,7 @@ export function EventCard({ event, onRsvp, rsvpBusy = false }: EventCardProps) {
             label="Going"
             names={event.goingPeople}
             open={open === "going"}
-            mine={event.goingPeople.includes(CURRENT_USER_NAME)}
+            mine={event.goingPeople.includes(readUserName())}
             busy={rsvpBusy}
             onOpen={setOpen}
             onClose={() => setOpen(null)}
@@ -130,7 +130,7 @@ export function EventCard({ event, onRsvp, rsvpBusy = false }: EventCardProps) {
             label="Looking for someone"
             names={event.lookingPeople}
             open={open === "looking"}
-            mine={event.lookingPeople.includes(CURRENT_USER_NAME)}
+            mine={event.lookingPeople.includes(readUserName())}
             busy={rsvpBusy}
             onOpen={setOpen}
             onClose={() => setOpen(null)}
