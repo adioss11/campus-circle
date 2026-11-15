@@ -1,6 +1,7 @@
 import secrets
 
 from fastapi import APIRouter, Depends, Header, HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.current_user import get_current_user
@@ -11,6 +12,16 @@ from app.passwords import hash_password, verify_password
 from app.schemas.auth import AuthOut, LoginIn, SignupIn, UserOut
 
 router = APIRouter(tags=["auth"])
+
+_EMAIL_TAKEN = "An account with that email already exists"
+
+
+def _is_duplicate_email(error: IntegrityError) -> bool:
+    """True when Postgres rejected a second row with the same email."""
+    orig = getattr(error, "orig", None)
+    diag = getattr(orig, "diag", None)
+    name = getattr(diag, "constraint_name", None)
+    return name == "users_email_key" or "users_email_key" in str(orig)
 
 
 def _start_session(db: Session, user: User) -> AuthOut:
@@ -24,14 +35,20 @@ def _start_session(db: Session, user: User) -> AuthOut:
 def signup(payload: SignupIn, db: Session = Depends(get_db)):
     existing = db.query(User).filter(User.email == payload.email).first()
     if existing:
-        raise HTTPException(status_code=409, detail="An account with that email already exists")
+        raise HTTPException(status_code=409, detail=_EMAIL_TAKEN)
     user = User(
         name=payload.name,
         email=payload.email,
         password_hash=hash_password(payload.password),
     )
     db.add(user)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError as error:
+        db.rollback()
+        if _is_duplicate_email(error):
+            raise HTTPException(status_code=409, detail=_EMAIL_TAKEN)
+        raise
     db.refresh(user)
     return _start_session(db, user)
 
