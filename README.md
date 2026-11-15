@@ -1,28 +1,48 @@
 # CampusCircle
 
-CampusCircle helps students find campus events and see who else is going, so showing up feels less awkward.
+CampusCircle is a small web app where students can find campus events, see who is going, and save their own plans.
 
-Campus events already exist, but they are often only posted on university social accounts. Rooms look empty, and a lot of people — especially students without a car, or who are not into nightlife — do not want to be the first to walk in. CampusCircle puts those events in one place. You can mark **Going** or **Looking for someone** so others can reach out and go together.
+## Problem
 
-## Status
+Campus events are easy to miss, and walking into a room alone is enough to make people stay home. CampusCircle puts those events in one place. A student can mark **Going** or **Looking for someone** so it is easier to show up with company.
 
-| Area | Status |
-| --- | --- |
-| Welcome, login, and signup screens | Done (real email + password) |
-| Events feed, post-event form, RSVP UI | Done (events load/save via API) |
-| Profile page | Done (from RSVPs via `GET /profile`) |
-| FastAPI hello + health routes | Done |
-| PostgreSQL connection via `.env` | Done |
-| Create event API (`POST /events`) | Done |
-| List events API (`GET /events`) | Done |
-| Wire frontend events to API | Done |
-| Save RSVP changes | Done |
-| Profile from RSVPs | Done |
-| Real login / auth | Done (signup, login, logout token) |
-| RSVPs follow the logged-in user | Done |
-| Events list requires login | Done |
+## Features
 
-**Frontend** signup and login check a real account. The events list, RSVP clicks, and the profile page use that same account. The password is stored as a hash.
+- Create an account, log in, and log out.
+- Passwords are stored as salted PBKDF2-SHA256 hashes. The password text is not stored.
+- A login creates a random session token. The browser sends it as `Authorization: Bearer …` on later requests.
+- Logged-in students can browse events and post a new one.
+- Events and RSVPs are saved in PostgreSQL and stay there after a refresh.
+- One person has one RSVP per event: **Going** or **Looking for someone**. Choosing the same status again removes it. Choosing the other status switches it.
+- The profile page lists that person’s Going and Looking events.
+- Opening the event list, posting an event, saving an RSVP, or loading a profile without a token returns 401.
+
+## Tech stack
+
+- **Frontend:** React, TypeScript, Vite
+- **Backend:** FastAPI
+- **Database:** PostgreSQL, accessed with SQLAlchemy
+- **Tests:** pytest
+
+## Architecture
+
+The browser talks to the API. The API talks to PostgreSQL. The website runs on port 5174 and the API on port 8000.
+
+```
+Browser (React)
+    |  Authorization: Bearer <token>
+    v
+FastAPI
+    |
+    v
+PostgreSQL
+    users      account name, email, password hash
+    sessions   login token for one signed-in browser
+    events     title, time, place, description
+    rsvps      one Going or Looking row per person per event
+```
+
+Startup creates those tables if they are missing. The token in `sessions` is what a protected request checks. Logging out deletes that token.
 
 ## Screenshots
 
@@ -41,27 +61,36 @@ Campus events already exist, but they are often only posted on university social
 ### Profile
 ![Profile page](docs/screenshots/05-profile.png)
 
-## What’s working today
+## Run locally
 
-- Browse campus events from the API (PostgreSQL) after you log in
-- RSVP: **Going** and **Looking for someone** (saved for the logged-in person)
-- Post-event form saves through the API (survives refresh)
-- Profile page lists the logged-in person's Going / Looking RSVPs
-- Logout confirmation dialog
-- Backend `GET /` and `GET /health` (health also checks the database)
-- Backend `POST /signup`, `POST /login`, `POST /logout`, `GET /me`
-- Backend `POST /events` / `GET /events` / `POST /events/{id}/rsvp` / `GET /profile`
-- CORS enabled so the React app (port 5174) can call the API (port 8000)
+Start PostgreSQL, then the API, then the website. The API will not start until the database exists.
 
-Not yet: photo upload, clubs, chat, maps, or admin tools.
+1. Install and start PostgreSQL, then create the app database. On Ubuntu, `sudo service postgresql start` is often blocked, so this uses cluster 16. More detail is in [backend/README.md](backend/README.md).
 
-## Tech stack
+```bash
+sudo apt-get update
+sudo apt-get install -y postgresql
+sudo pg_ctlcluster 16 main start
+sudo -u postgres psql -c "CREATE USER campuscircle WITH PASSWORD 'campuscircle';"
+sudo -u postgres psql -c "CREATE DATABASE campuscircle OWNER campuscircle;"
+```
 
-- **Frontend:** React + TypeScript (Vite)
-- **Backend:** FastAPI
-- **Database:** PostgreSQL (`events`, `users`, and `rsvps` tables created on API startup)
+2. Start the API. `.venv` and `.env` stay on your machine. Git does not store them.
 
-## Run the frontend
+```bash
+cd backend
+sudo apt-get install -y python3-venv
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+uvicorn app.main:app --reload
+```
+
+- http://localhost:8000/health should include `"database": "ok"`.
+- http://localhost:8000/docs lists the routes. Events, RSVP, and profile need a token from signup or login.
+
+3. In a second terminal, start the website.
 
 ```bash
 cd frontend
@@ -69,54 +98,17 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5174](http://localhost:5174). Sign up, or log in with an email and password that are already saved. The API checks the password. RSVP and profile calls send the login token.
+Open [http://localhost:5174](http://localhost:5174), then sign up or log in.
 
-Keep the backend running on port 8000 at the same time, or the Events page cannot load/save.
+## Tests
 
-## Run the backend
-
-See [backend/README.md](backend/README.md) for PostgreSQL setup and `.env`.
-
-`.venv` is a local folder of installed Python packages. Git does not store it, and it does not store `backend/.env` either. `.cursor/install.sh` creates `backend/.venv`, copies `.env.example` to `.env`, installs PostgreSQL, and creates the `campuscircle` database. `.cursor/start.sh` starts PostgreSQL on each new boot. If activate is missing, or PostgreSQL says `unrecognized service`, this machine booted from an older setup. Create the pieces once:
+From `backend`, with the virtualenv active:
 
 ```bash
-cd backend
-sudo apt-get update
-sudo apt-get install -y python3-venv
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env   # once
-uvicorn app.main:app --reload
+sudo -u postgres psql -c "CREATE DATABASE campuscircle_test OWNER campuscircle;"
+pytest
 ```
 
-- http://localhost:8000/ — hello JSON
-- http://localhost:8000/health — should show `"database": "ok"`
-- http://localhost:8000/docs — interactive API docs
+Create `campuscircle_test` once. The tests use that database, not the one the app uses while you click around.
 
-## Repository layout
-
-This repo is a **monorepo**: the React app and the FastAPI app live side by side.
-
-```
-campus-circle/
-├── docs/screenshots/         # README screenshots
-├── frontend/                 # React + TypeScript (Vite)
-│   └── src/
-│       ├── api/              # backend calls
-│       ├── components/       # reusable UI
-│       ├── data/             # form options and card colors
-│       ├── pages/            # Welcome, Events, Profile
-│       └── types/            # TypeScript shapes (Event, …)
-└── backend/                  # FastAPI + PostgreSQL
-    ├── .env.example
-    ├── requirements.txt
-    └── app/
-        ├── main.py           # FastAPI app
-        ├── database.py       # Postgres connection
-        ├── routers/          # HTTP URLs (`events.py`)
-        ├── models/           # PostgreSQL tables (`event.py`)
-        └── schemas/          # JSON in/out (`event.py`)
-```
-
-Read [STRUCTURE.md](STRUCTURE.md) for why each folder exists.
+The folder map is in [STRUCTURE.md](STRUCTURE.md).

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.current_user import get_current_user
@@ -32,19 +33,36 @@ def toggle_rsvp(
     if not event:
         raise HTTPException(status_code=404, detail="Event not found")
 
+    try:
+        _apply_rsvp(db, event_id, user.id, payload.status)
+        db.commit()
+    except IntegrityError:
+        # Two clicks inserted at the same time. The unique rule kept one row.
+        # Apply the click again against that row instead of returning a 500.
+        db.rollback()
+        try:
+            _apply_rsvp(db, event_id, user.id, payload.status)
+            db.commit()
+        except IntegrityError:
+            db.rollback()
+            raise HTTPException(
+                status_code=409,
+                detail="Could not save that RSVP. Try again.",
+            )
+
+    saved = db.query(Event).filter(Event.id == event_id).first()
+    return event_to_out(saved, db)
+
+
+def _apply_rsvp(db: Session, event_id: int, user_id: int, status: str) -> None:
     existing = (
         db.query(Rsvp)
-        .filter(Rsvp.event_id == event_id, Rsvp.user_id == user.id)
+        .filter(Rsvp.event_id == event_id, Rsvp.user_id == user_id)
         .first()
     )
-
     if existing is None:
-        db.add(Rsvp(event_id=event_id, user_id=user.id, status=payload.status))
-    elif existing.status == payload.status:
+        db.add(Rsvp(event_id=event_id, user_id=user_id, status=status))
+    elif existing.status == status:
         db.delete(existing)
     else:
-        existing.status = payload.status
-
-    db.commit()
-    db.refresh(event)
-    return event_to_out(event, db)
+        existing.status = status

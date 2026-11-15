@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class EventCreate(BaseModel):
@@ -10,6 +10,21 @@ class EventCreate(BaseModel):
     time: str = Field(min_length=1, max_length=40)
     location: str = Field(min_length=1, max_length=120)
     description: str = Field(min_length=1)
+
+    @field_validator(
+        "title",
+        "day",
+        "month",
+        "time",
+        "location",
+        "description",
+        mode="before",
+    )
+    @classmethod
+    def strip_text(cls, value: str) -> str:
+        if isinstance(value, str):
+            return value.strip()
+        return value
 
 
 class EventOut(BaseModel):
@@ -24,3 +39,5 @@ class EventOut(BaseModel):
     description: str
     goingPeople: list[str] = Field(default_factory=list)
     lookingPeople: list[str] = Field(default_factory=list)
+    goingUserIds: list[int] = Field(default_factory=list)
+    lookingUserIds: list[int] = Field(default_factory=list)

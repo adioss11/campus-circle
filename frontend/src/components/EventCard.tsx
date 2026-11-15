@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { readUserName } from "../api/session";
+import { readUserId } from "../api/session";
 import type { CampusEvent } from "../types/event";
 import { coverForEvent } from "../data/eventCover";
 
@@ -10,6 +10,11 @@ type EventCardProps = {
 };
 
 type RsvpKind = "going" | "looking";
+
+function isSelected(userIds: number[]) {
+  const myId = readUserId();
+  return myId !== null && userIds.includes(myId);
+}
 
 function canHover() {
   return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -119,7 +124,7 @@ export function EventCard({ event, onRsvp, rsvpBusy = false }: EventCardProps) {
             label="Going"
             names={event.goingPeople}
             open={open === "going"}
-            mine={event.goingPeople.includes(readUserName())}
+            mine={isSelected(event.goingUserIds)}
             busy={rsvpBusy}
             onOpen={setOpen}
             onClose={() => setOpen(null)}
@@ -130,7 +135,7 @@ export function EventCard({ event, onRsvp, rsvpBusy = false }: EventCardProps) {
             label="Looking for someone"
             names={event.lookingPeople}
             open={open === "looking"}
-            mine={event.lookingPeople.includes(readUserName())}
+            mine={isSelected(event.lookingUserIds)}
             busy={rsvpBusy}
             onOpen={setOpen}
             onClose={() => setOpen(null)}

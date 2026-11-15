@@ -11,7 +11,7 @@ from app.schemas.profile import ProfileOut
 
 
 def initials_from_name(name: str) -> str:
-    """Turn 'Alex Kim' into 'AK'. Computed for the avatar. Not a database column."""
+    """Turn 'Sam Lee' into 'SL'. Computed for the avatar. Not a database column."""
     parts = [part for part in name.split() if part]
     if not parts:
         return "?"

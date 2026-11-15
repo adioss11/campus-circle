@@ -18,7 +18,16 @@ export async function toggleRsvp(
     throw new Error("Log in to save an RSVP.");
   }
   if (!response.ok) {
-    throw new Error(`Could not save RSVP (HTTP ${response.status})`);
+    let detail = `Could not save RSVP (HTTP ${response.status})`;
+    try {
+      const body = (await response.json()) as { detail?: unknown };
+      if (typeof body.detail === "string" && body.detail) {
+        detail = body.detail;
+      }
+    } catch {
+      // The body was not JSON. Keep the status message.
+    }
+    throw new Error(detail);
   }
   const data = (await response.json()) as ApiEvent;
   return toCampusEvent(data);

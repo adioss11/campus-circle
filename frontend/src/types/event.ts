@@ -8,4 +8,6 @@ export type CampusEvent = {
   description: string;
   goingPeople: string[];
   lookingPeople: string[];
+  goingUserIds: number[];
+  lookingUserIds: number[];
 };

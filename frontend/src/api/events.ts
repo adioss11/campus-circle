@@ -13,6 +13,8 @@ export type ApiEvent = {
   description: string;
   goingPeople: string[];
   lookingPeople: string[];
+  goingUserIds?: number[];
+  lookingUserIds?: number[];
 };
 
 export type EventCreatePayload = {
@@ -35,6 +37,8 @@ export function toCampusEvent(apiEvent: ApiEvent): CampusEvent {
     description: apiEvent.description,
     goingPeople: apiEvent.goingPeople ?? [],
     lookingPeople: apiEvent.lookingPeople ?? [],
+    goingUserIds: apiEvent.goingUserIds ?? [],
+    lookingUserIds: apiEvent.lookingUserIds ?? [],
   };
 }
 

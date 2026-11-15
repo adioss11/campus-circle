@@ -8,7 +8,7 @@ class Rsvp(Base):
     """One row = one person's RSVP on one event.
 
     status is "going" or "looking".
-    UniqueConstraint means Alex can have only one RSVP per event.
+    UniqueConstraint means one person can have only one RSVP per event.
     """
 
     __tablename__ = "rsvps"
