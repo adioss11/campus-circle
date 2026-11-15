@@ -1,6 +1,7 @@
 {
   "name": "CampusCircle",
   "install": "bash .cursor/install.sh",
+  "start": "bash .cursor/start.sh",
   "terminals": [
     {
       "name": "frontend-dev",

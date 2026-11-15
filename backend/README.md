@@ -52,10 +52,18 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 
 ## One-time local database setup
 
-Install PostgreSQL, then create a user and database (example matches `.env.example`):
+On a Cloud machine built with this setup, `.cursor/install.sh` installs PostgreSQL, copies `.env`, and creates the user and database. `.cursor/start.sh` starts the database on each boot. `sudo service postgresql start` is often blocked here. This command starts cluster 16:
 
 ```bash
-sudo service postgresql start
+sudo pg_ctlcluster 16 main start
+```
+
+On a machine that does not have PostgreSQL yet, install it, then create the user and database (the password matches `.env.example`):
+
+```bash
+sudo apt-get update
+sudo apt-get install -y postgresql
+sudo pg_ctlcluster 16 main start
 sudo -u postgres psql -c "CREATE USER campuscircle WITH PASSWORD 'campuscircle';"
 sudo -u postgres psql -c "CREATE DATABASE campuscircle OWNER campuscircle;"
 ```
@@ -68,7 +76,7 @@ cp .env.example .env
 
 ## Run the API
 
-`.venv` holds the installed Python packages for this API. It is listed in `.gitignore`, so a fresh machine does not have `backend/.venv/bin/activate` until something creates it. Cloud Agent setup runs `.cursor/install.sh`, which creates that folder. If the activate file is missing, create it once:
+`.venv` holds the installed Python packages for this API. It is listed in `.gitignore`, and so is `.env`. Cloud setup creates both, and it creates the `campuscircle` database. If activate is missing, create the folder once:
 
 ```bash
 cd backend

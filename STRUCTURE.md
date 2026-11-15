@@ -13,7 +13,8 @@ They live in **one git repo** (a monorepo) so you can work on both sides togethe
 campus-circle/
 ├── README.md                 # what the product is
 ├── STRUCTURE.md              # this file: why folders exist
-├── .cursor/install.sh        # creates node_modules and backend/.venv on a new Cloud machine
+├── .cursor/install.sh        # creates node_modules, backend/.venv, .env, and the local database
+├── .cursor/start.sh          # starts PostgreSQL on each new Cloud machine
 ├── frontend/                 # React + TypeScript (already started)
 └── backend/                  # FastAPI — structure ready, implementation next
 ```
