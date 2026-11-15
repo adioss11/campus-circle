@@ -193,6 +193,40 @@ def test_a_conflicting_insert_is_retried_instead_of_a_500(client, monkeypatch):
     assert rsvp_count(event_id, user_id) == 1
 
 
+def test_same_display_name_uses_user_id(client):
+    sam = signup(client, "Sam Lee", "sam.one@campus.test")
+    other = signup(client, "Sam Lee", "sam.two@campus.test")
+    event_id = client.post(
+        "/events",
+        json=EVENT,
+        headers=auth(sam["token"]),
+    ).json()["id"]
+    marked = client.post(
+        f"/events/{event_id}/rsvp",
+        json={"status": "going"},
+        headers=auth(sam["token"]),
+    )
+    assert marked.status_code == 200
+    body = marked.json()
+    assert body["goingPeople"] == ["Sam Lee"]
+    assert body["goingUserIds"] == [sam["id"]]
+    assert other["id"] not in body["goingUserIds"]
+    assert body["lookingUserIds"] == []
+
+
+def test_signup_unique_constraint_is_a_conflict(client, monkeypatch):
+    from sqlalchemy.orm import Query
+
+    signup(client, "Sam Lee", "sam@campus.test")
+    monkeypatch.setattr(Query, "first", lambda self: None)
+    raced = client.post(
+        "/signup",
+        json={"name": "Sam Lee", "email": "sam@campus.test", "password": PASSWORD},
+    )
+    assert raced.status_code == 409
+    assert raced.json()["detail"] == "An account with that email already exists"
+
+
 def test_profile_belongs_to_the_logged_in_user(client):
     sam = signup(client, "Sam Lee", "sam@campus.test")
     riley = signup(client, "Riley Chen", "riley@campus.test")

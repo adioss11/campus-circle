@@ -82,6 +82,8 @@ export function PostEventModal({
             description: nextDescription,
             goingPeople: [],
             lookingPeople: [],
+            goingUserIds: [],
+            lookingUserIds: [],
           });
         }}
       >

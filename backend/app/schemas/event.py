@@ -39,3 +39,5 @@ class EventOut(BaseModel):
     description: str
     goingPeople: list[str] = Field(default_factory=list)
     lookingPeople: list[str] = Field(default_factory=list)
+    goingUserIds: list[int] = Field(default_factory=list)
+    lookingUserIds: list[int] = Field(default_factory=list)

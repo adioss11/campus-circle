@@ -34,7 +34,7 @@ export async function signup(input: {
     throw new Error(await readError(response));
   }
   const data = (await response.json()) as AuthResult;
-  saveSession(data.token, data.name);
+  saveSession(data.token, data.name, data.id);
 }
 
 export async function login(input: {
@@ -50,7 +50,7 @@ export async function login(input: {
     throw new Error(await readError(response));
   }
   const data = (await response.json()) as AuthResult;
-  saveSession(data.token, data.name);
+  saveSession(data.token, data.name, data.id);
 }
 
 export async function logout(): Promise<void> {

@@ -19,16 +19,20 @@ def event_to_out(event: Event, db: Session) -> EventOut:
         users = db.query(User).filter(User.id.in_(user_ids)).all()
         names_by_id = {user.id: user.name for user in users}
 
-    going_people = [
-        names_by_id[rsvp.user_id]
-        for rsvp in rsvps
-        if rsvp.status == "going" and rsvp.user_id in names_by_id
-    ]
-    looking_people = [
-        names_by_id[rsvp.user_id]
-        for rsvp in rsvps
-        if rsvp.status == "looking" and rsvp.user_id in names_by_id
-    ]
+    going_people = []
+    going_user_ids = []
+    looking_people = []
+    looking_user_ids = []
+    for rsvp in rsvps:
+        name = names_by_id.get(rsvp.user_id)
+        if name is None:
+            continue
+        if rsvp.status == "going":
+            going_people.append(name)
+            going_user_ids.append(rsvp.user_id)
+        elif rsvp.status == "looking":
+            looking_people.append(name)
+            looking_user_ids.append(rsvp.user_id)
 
     return EventOut(
         id=event.id,
@@ -40,4 +44,6 @@ def event_to_out(event: Event, db: Session) -> EventOut:
         description=event.description,
         goingPeople=going_people,
         lookingPeople=looking_people,
+        goingUserIds=going_user_ids,
+        lookingUserIds=looking_user_ids,
     )
