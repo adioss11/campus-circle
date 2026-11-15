@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createEvent, getEvents } from "../api/events";
 import { toggleRsvp, type RsvpStatus } from "../api/rsvps";
+import { readToken } from "../api/session";
 import { EventCard } from "../components/EventCard";
 import { PostEventModal } from "../components/PostEventModal";
 import { Sidebar } from "../components/Sidebar";
@@ -8,8 +10,10 @@ import type { CampusEvent } from "../types/event";
 import "./EventsPage.css";
 
 export function EventsPage() {
+  const navigate = useNavigate();
   const [events, setEvents] = useState<CampusEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [needsLogin, setNeedsLogin] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [rsvpError, setRsvpError] = useState<string | null>(null);
@@ -31,17 +35,32 @@ export function EventsPage() {
     let cancelled = false;
 
     async function load() {
+      if (!readToken()) {
+        if (!cancelled) {
+          setNeedsLogin(true);
+          setLoading(false);
+        }
+        return;
+      }
       try {
         const data = await getEvents();
         if (!cancelled) {
           setEvents(data);
+          setNeedsLogin(false);
           setLoadError(null);
         }
-      } catch {
+      } catch (reason) {
         if (!cancelled) {
-          setLoadError(
-            "Could not load events. Is the API running on port 8000?",
-          );
+          const message =
+            reason instanceof Error
+              ? reason.message
+              : "Could not load events. Is the API running on port 8000?";
+          if (message === "Log in to see events.") {
+            setNeedsLogin(true);
+            setLoadError(null);
+          } else {
+            setLoadError(message);
+          }
         }
       } finally {
         if (!cancelled) {
@@ -60,8 +79,23 @@ export function EventsPage() {
     <div className="events-shell">
       <div className="atmosphere" aria-hidden="true" />
       <div className="events-layout">
-        <Sidebar onPost={() => setPosting(true)} />
+        {needsLogin ? null : <Sidebar onPost={() => setPosting(true)} />}
         <main className="feed" id="event-feed">
+          {needsLogin ? (
+            <header className="feed-header">
+              <p className="eyebrow">LOG IN REQUIRED</p>
+              <h1>Log in to see events.</h1>
+              <p>The events list is saved for people with an account.</p>
+              <button
+                type="button"
+                className="primary-button"
+                onClick={() => navigate("/")}
+              >
+                Log in
+              </button>
+            </header>
+          ) : (
+          <>
           <header className="feed-header">
             <p className="eyebrow">THIS WEEK ON CAMPUS</p>
             <h1>Events</h1>
@@ -101,6 +135,8 @@ export function EventsPage() {
               }}
             />
           ))}
+          </>
+          )}
         </main>
       </div>
       {posting ? (
@@ -123,10 +159,12 @@ export function EventsPage() {
                 setEvents((current) => [saved, ...current]);
                 setPosting(false);
                 window.scrollTo({ top: 0, behavior: "smooth" });
-              } catch {
-                setSaveError(
-                  "Could not save the event. Is the API running on port 8000?",
-                );
+              } catch (reason) {
+                const message =
+                  reason instanceof Error
+                    ? reason.message
+                    : "Could not save the event. Is the API running on port 8000?";
+                setSaveError(message);
               } finally {
                 setSaving(false);
               }

@@ -20,8 +20,9 @@ Campus events already exist, but they are often only posted on university social
 | Profile from RSVPs | Done |
 | Real login / auth | Done (signup, login, logout token) |
 | RSVPs follow the logged-in user | Done |
+| Events list requires login | Done |
 
-**Frontend** signup and login check a real account. RSVP clicks and the profile page use that same account. The password is stored as a hash.
+**Frontend** signup and login check a real account. The events list, RSVP clicks, and the profile page use that same account. The password is stored as a hash.
 
 ## Screenshots
 
@@ -42,7 +43,7 @@ Campus events already exist, but they are often only posted on university social
 
 ## What’s working today
 
-- Browse campus events from the API (PostgreSQL), not mock feed data
+- Browse campus events from the API (PostgreSQL) after you log in
 - RSVP: **Going** and **Looking for someone** (saved for the logged-in person)
 - Post-event form saves through the API (survives refresh)
 - Profile page lists the logged-in person's Going / Looking RSVPs

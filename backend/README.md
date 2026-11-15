@@ -49,6 +49,11 @@ Python FastAPI app. This is the API server. It talks to PostgreSQL and will send
 - No token means HTTP 401
 - The website sends the token on those calls
 
+### Step J — events list requires login
+- `GET /events`, `POST /events`, and `GET /events/{id}` read the token
+- No token means HTTP 401
+- The list is still shared. Login is the gate. It does not hide other people's events.
+
 
 ## One-time local database setup
 
@@ -94,17 +99,19 @@ Then open:
 - http://localhost:8000/health — should include `"database": "ok"`
 - http://localhost:8000/docs — interactive API docs (auth, events, RSVP, profile)
 
-List all saved events:
+List saved events. Replace TOKEN with the token from login. No token returns 401.
 
 ```bash
-curl -s http://localhost:8000/events
+curl -s http://localhost:8000/events \
+  -H "Authorization: Bearer TOKEN"
 ```
 
-Create one event:
+Create one event. Same TOKEN.
 
 ```bash
 curl -s -X POST http://localhost:8000/events \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TOKEN" \
   -d '{
     "title": "Welcome Back Social",
     "day": "15",

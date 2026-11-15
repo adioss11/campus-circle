@@ -1,5 +1,6 @@
 import type { CampusEvent } from "../types/event";
 import { API_BASE_URL } from "./config";
+import { authHeaders } from "./session";
 
 /** JSON shape returned by the FastAPI events routes. */
 export type ApiEvent = {
@@ -38,7 +39,12 @@ export function toCampusEvent(apiEvent: ApiEvent): CampusEvent {
 }
 
 export async function getEvents(): Promise<CampusEvent[]> {
-  const response = await fetch(`${API_BASE_URL}/events`);
+  const response = await fetch(`${API_BASE_URL}/events`, {
+    headers: authHeaders(),
+  });
+  if (response.status === 401) {
+    throw new Error("Log in to see events.");
+  }
   if (!response.ok) {
     throw new Error(`Could not load events (HTTP ${response.status})`);
   }
@@ -51,9 +57,12 @@ export async function createEvent(
 ): Promise<CampusEvent> {
   const response = await fetch(`${API_BASE_URL}/events`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(payload),
   });
+  if (response.status === 401) {
+    throw new Error("Log in to post an event.");
+  }
   if (!response.ok) {
     throw new Error(`Could not create event (HTTP ${response.status})`);
   }

@@ -24,4 +24,4 @@ The API must also be running on port 8000, or login, events, and profile cannot 
 | `types/` | The shape of an event in TypeScript |
 | `data/` | Form choices and card colors. Not the database. |
 
-Login and signup call the API. RSVP clicks and the profile lists use the person who is logged in.
+Login and signup call the API. The events list, RSVP clicks, and the profile lists use the person who is logged in.
