@@ -5,7 +5,7 @@ Functions that call the FastAPI backend (`fetch`).
 - `config.ts` — API base URL (`http://127.0.0.1:8000` by default)
 - `session.ts` — login token and your name in the browser
 - `auth.ts` — `signup()`, `login()`, `logout()`
-- `events.ts` — `getEvents()`, `createEvent()`
+- `events.ts` — `getEvents()`, `createEvent()` (sends the login token)
 - `rsvps.ts` — `toggleRsvp()`
 - `profile.ts` — `getProfile()`
 
